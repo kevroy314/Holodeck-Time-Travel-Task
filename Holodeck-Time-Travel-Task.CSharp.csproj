@@ -72,9 +72,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\RandomStartLocation.cs" />
+    <Compile Include="Assets\Scripts\ClickableObject.cs" />
     <Compile Include="Assets\Scripts\DayNightController.cs" />
     <Compile Include="Assets\Scripts\DropGrassPrimitive.cs" />
     <Compile Include="Assets\Scripts\FallFromSky.cs" />
+    <Compile Include="Assets\Scripts\FlyToSky.cs" />
+    <Compile Include="Assets\Scripts\Foil.cs" />
+    <Compile Include="Assets\Scripts\ItemGenerator.cs" />
     <Compile Include="Assets\Scripts\TemporalImagingEffect.cs" />
     <Compile Include="Assets\Scripts\TimeController.cs" />
   </ItemGroup>
