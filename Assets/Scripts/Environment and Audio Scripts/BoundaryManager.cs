@@ -67,4 +67,19 @@ public class BoundaryManager : MonoBehaviour {
         for (int i = 0; i < renderers.Length; i++)
             iTween.ColorTo(renderers[i].gameObject, c, transitionDuration);
     }
+
+    public int getCurrentState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public Color getCurrentColor()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public int getTransitionProgress()
+    {
+        throw new System.NotImplementedException();
+    }
 }

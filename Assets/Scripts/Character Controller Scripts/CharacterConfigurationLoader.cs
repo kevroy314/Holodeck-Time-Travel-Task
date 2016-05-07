@@ -49,6 +49,10 @@ public class CharacterConfigurationLoader : MonoBehaviour {
 
         float itemPlaceDistance = (float)ini.ReadValue("Character", "ItemPlaceDistance", 3.0);
 
+        string keyboardPickUpAllButtonString = ini.ReadValue("Character", "KeyboardPickUpAllButton", "P");
+        KeyCode keyboardPickUpAllButton = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyboardPickUpAllButtonString);
+        string controllerPickUpAllButton = ini.ReadValue("Character", "ControllerPickUpAllButton", "back");
+
         if (clicker != null) {
             clicker.keyClickButton = keyboardClickButton;
             clicker.controllerClickButton = controllerClickButton;
@@ -62,6 +66,8 @@ public class CharacterConfigurationLoader : MonoBehaviour {
             inventory.nextKeyCode = keyboardNextItemButton;
             inventory.nextButtonString = controllerNextItemButton;
             inventory.placeDistance = itemPlaceDistance;
+            inventory.pickUpAllCode = keyboardPickUpAllButton;
+            inventory.pickUpAllButtonString = controllerPickUpAllButton;
         }
 
         if (tcontroller != null)

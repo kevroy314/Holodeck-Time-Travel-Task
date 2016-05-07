@@ -1,23 +1,27 @@
-﻿using System.IO;
+﻿using Chronos;
+using System.IO;
 using UnityEngine;
 
-public class ItemGenerator : MonoBehaviour {
+public class ItemGenerator : MonoBehaviour
+{
 
     public GameObject fallPrefabItem;
     public GameObject flyPrefabItem;
     public GameObject foilPrefabItem;
-    public double itemHeight = 1.0;
-    public double itemFallTime = 1.0;
-    public double itemInactiveHeight = 10.0;
+    public static double itemHeight = 1.0;
+    public static double itemFallTime = 1.0;
+    public static double itemInactiveHeight = 10.0;
     public bool invertTimeline = false;
+    public Timeline time;
 
     enum ItemTypes
     {
-        Fall=0, Fly=1, Foil=2
+        Fall = 0, Fly = 1, Foil = 2
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         string configFile;
         if (CharacterConfigurationLoader.getConfigFileNameFromPlayerPrefs && PlayerPrefs.HasKey(CharacterConfigurationLoader.configFilePlayerPrefsString))
             configFile = PlayerPrefs.GetString(CharacterConfigurationLoader.configFilePlayerPrefsString);
@@ -27,10 +31,13 @@ public class ItemGenerator : MonoBehaviour {
         ini.Open(Application.dataPath + '/' + configFile);
         string imgRootPath = Application.dataPath + "/ItemImages/";
         int numItems = ini.ReadValue("Global", "NumItems", 0);
-        invertTimeline = ini.ReadValue("Global", "InvertItemOrder", invertTimeline?1:0) != 0;
+        invertTimeline = ini.ReadValue("Global", "InvertItemOrder", invertTimeline ? 1 : 0) != 0;
         float y = (float)ini.ReadValue("Global", "ItemHeight", itemHeight);
+        itemHeight = y;
         float fallTime = (float)ini.ReadValue("Global", "ItemFallTime", itemFallTime);
+        itemFallTime = fallTime;
         float inactiveHeight = (float)ini.ReadValue("Global", "ItemInactiveHeight", itemInactiveHeight);
+        itemInactiveHeight = inactiveHeight;
         float endTime = (float)ini.ReadValue("Global", "EndTime", 10.0);
         string itemKey = "Item";
 
@@ -38,7 +45,7 @@ public class ItemGenerator : MonoBehaviour {
         float[] delays = new float[numItems];
         ItemTypes[] types = new ItemTypes[numItems];
         Texture2D[] images = new Texture2D[numItems];
-        for(int i = 0; i < numItems; i++)
+        for (int i = 0; i < numItems; i++)
         {
             float x = (float)ini.ReadValue("Items", itemKey + i + "X", 0.0);
             float z = (float)ini.ReadValue("Items", itemKey + i + "Z", 0.0);
@@ -77,7 +84,8 @@ public class ItemGenerator : MonoBehaviour {
         ini.Close();
 
         if (invertTimeline)
-            for (int i = 0; i < locations.Length;i++){
+            for (int i = 0; i < locations.Length; i++)
+            {
                 if (types[i] == ItemTypes.Fall)
                     types[i] = ItemTypes.Fly;
                 else if (types[i] == ItemTypes.Fly)
@@ -88,53 +96,68 @@ public class ItemGenerator : MonoBehaviour {
         for (int i = 0; i < locations.Length; i++)
         {
             if (types[i] == ItemTypes.Fall)
-            {
-                GameObject tmp = Instantiate(fallPrefabItem);
-                DisableAllCollidersInObject(tmp);
-                tmp.transform.parent = transform;
-                tmp.transform.localPosition = locations[i];
-                if (images[i] != null)
-                {
-                    tmp.GetComponentInChildren<MeshRenderer>().material.mainTexture = images[i];
-                    flipTexture(tmp);
-                }
-                FallFromSky script = tmp.GetComponentInChildren<FallFromSky>();
-                script.transitionDelay = delays[i];
-                script.transitionDuration = fallTime;
-                script.startPos = new Vector3(script.startPos.x, inactiveHeight, script.startPos.z);
-            }
+                GenerateFall(fallPrefabItem, transform, locations[i], images[i], delays[i], time);
             else if (types[i] == ItemTypes.Fly)
-            {
-                GameObject tmp = Instantiate(flyPrefabItem);
-                DisableAllCollidersInObject(tmp);
-                tmp.transform.parent = transform;
-                tmp.transform.localPosition = locations[i];
-                if (images[i] != null)
-                {
-                    tmp.GetComponentInChildren<MeshRenderer>().material.mainTexture = images[i];
-                    flipTexture(tmp);
-                }
-                FlyToSky script = tmp.GetComponentInChildren<FlyToSky>();
-                script.transitionDelay = delays[i];
-                script.transitionDuration = fallTime;
-                script.endPos = new Vector3(script.endPos.x, inactiveHeight, script.endPos.z);
-            }
+                GenerateFly(flyPrefabItem, transform, locations[i], images[i], delays[i], time);
             else if (types[i] == ItemTypes.Foil)
-            {
-                GameObject tmp = Instantiate(foilPrefabItem);
-                DisableAllCollidersInObject(tmp);
-                if (images[i] != null)
-                {
-                    tmp.GetComponentInChildren<MeshRenderer>().material.mainTexture = images[i];
-                    flipTexture(tmp);
-                }
-                tmp.transform.parent = transform;
-                tmp.transform.localPosition = locations[i];
-            }
+                GenerateFoil(foilPrefabItem, transform, locations[i], images[i], time);
         }
     }
 
-    void DisableAllCollidersInObject(GameObject obj)
+    public static GameObject GenerateFall(GameObject fallPrefabItem, Transform parent, Vector3 location, Texture2D image, float delay, Timeline time)
+    {
+        GameObject tmp = Instantiate(fallPrefabItem);
+        DisableAllCollidersInObject(tmp);
+        tmp.transform.parent = parent;
+        tmp.transform.localPosition = location;
+        if (image != null)
+        {
+            tmp.GetComponentInChildren<MeshRenderer>().material.mainTexture = image;
+            flipTexture(tmp);
+        }
+        FallFromSky script = tmp.GetComponentInChildren<FallFromSky>();
+        script.transitionDelay = delay;
+        script.transitionDuration = (float)itemFallTime;
+        script.startPos = new Vector3(script.startPos.x, (float)itemInactiveHeight, script.startPos.z);
+        script.time = time;
+        return tmp;
+    }
+
+    public static GameObject GenerateFly(GameObject flyPrefabItem, Transform parent, Vector3 location, Texture2D image, float delay, Timeline time)
+    {
+        GameObject tmp = Instantiate(flyPrefabItem);
+        DisableAllCollidersInObject(tmp);
+        tmp.transform.parent = parent;
+        tmp.transform.localPosition = location;
+        if (image != null)
+        {
+            tmp.GetComponentInChildren<MeshRenderer>().material.mainTexture = image;
+            flipTexture(tmp);
+        }
+        FlyToSky script = tmp.GetComponentInChildren<FlyToSky>();
+        script.transitionDelay = delay;
+        script.transitionDuration = (float)itemFallTime;
+        script.endPos = new Vector3(script.endPos.x, (float)itemInactiveHeight, script.endPos.z);
+        script.time = time;
+        return tmp;
+    }
+
+    public static GameObject GenerateFoil(GameObject foilPrefabItem, Transform parent, Vector3 location, Texture2D image, Timeline time)
+    {
+        GameObject tmp = Instantiate(foilPrefabItem);
+        DisableAllCollidersInObject(tmp);
+        if (image != null)
+        {
+            tmp.GetComponentInChildren<MeshRenderer>().material.mainTexture = image;
+            flipTexture(tmp);
+        }
+        tmp.transform.parent = parent;
+        tmp.transform.localPosition = location;
+        tmp.GetComponentInChildren<Foil>().Time = time;
+        return tmp;
+    }
+
+    private static void DisableAllCollidersInObject(GameObject obj)
     {
         Collider[] colliders = obj.GetComponentsInChildren<BoxCollider>();
         for (int i = 0; i < colliders.Length; i++)
@@ -142,30 +165,35 @@ public class ItemGenerator : MonoBehaviour {
         try { obj.GetComponent<BoxCollider>().enabled = false; } catch (System.Exception) { }
     }
 
-    void flipTexture(GameObject obj)
+    private static void flipTexture(GameObject obj)
     {
-            //Get the mesh filter for this cube
-            MeshFilter mf = obj.GetComponentInChildren<MeshFilter>();
-            Mesh mesh = null;
-            if (mf != null)
-                mesh = mf.mesh;
+        //Get the mesh filter for this cube
+        MeshFilter mf = obj.GetComponentInChildren<MeshFilter>();
+        Mesh mesh = null;
+        if (mf != null)
+            mesh = mf.mesh;
 
-            if (mesh == null || mesh.uv.Length != 24)
-            {
-                Debug.Log("Script needs to be attached to built-in cube");
-                return;
-            }
-
-            //Get the current UVs (probably all 0,0;1,0;0,1;1,1)
-            Vector2[] uvs = mesh.uv;
-
-            // Back side UV flipped
-            uvs[10] = new Vector2(0.0f, 0.0f);
-            uvs[11] = new Vector2(-1f, 0.0f);
-            uvs[6] = new Vector2(0.0f, -1f);
-            uvs[7] = new Vector2(-1f, -1f);
-
-            // Set the output UV once and it will be fixed for the rest of the object lifetime
-            mesh.uv = uvs;
+        if (mesh == null || mesh.uv.Length != 24)
+        {
+            Debug.Log("Script needs to be attached to built-in cube");
+            return;
         }
+
+        //Get the current UVs (probably all 0,0;1,0;0,1;1,1)
+        Vector2[] uvs = mesh.uv;
+
+        // Back side UV flipped
+        uvs[10] = new Vector2(0.0f, 0.0f);
+        uvs[11] = new Vector2(-1f, 0.0f);
+        uvs[6] = new Vector2(0.0f, -1f);
+        uvs[7] = new Vector2(-1f, -1f);
+
+        // Set the output UV once and it will be fixed for the rest of the object lifetime
+        mesh.uv = uvs;
+    }
+
+    public ClickableObject[] getItems()
+    {
+        throw new System.NotImplementedException();
+    }
 }

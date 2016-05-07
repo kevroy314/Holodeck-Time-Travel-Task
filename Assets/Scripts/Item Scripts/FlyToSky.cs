@@ -12,7 +12,7 @@ public class FlyToSky : ClickableObject
     public Vector3 endPos = new Vector3(0f, 10f, 0f);
 
     private MeshRenderer render;
-    private Timeline time;
+    public Timeline time;
     private AudioSource audioSrc;
     private bool playedForward = false;
     private bool playedBackward = true;
@@ -26,7 +26,7 @@ public class FlyToSky : ClickableObject
         StartI();
 
         render = GetComponent<MeshRenderer>();
-        time = GetComponent<Timeline>();
+        //time = GetComponent<Timeline>();
 
         audioSrc = transform.parent.gameObject.GetComponent<AudioSource>();
 
@@ -48,8 +48,6 @@ public class FlyToSky : ClickableObject
         localTime = time;
 
         render.enabled = true;
-
-        time.ResetRecording();
     }
 
     public void Update()

@@ -50,7 +50,7 @@ public class ItemClickController : MonoBehaviour {
         bool clickAction = Input.GetKey(keyClickButton) || Input.GetButton(controllerClickButton);
         if(clickAction && !prevClickAction) //On click rising edge
             if(closestIndex != -1) //If an object was found
-                if (clickableObjects[closestIndex].gameObject.GetComponent<Renderer>().isVisible && closestDist <= minClickDistance && clickableObjects[closestIndex].clickable) //And it is visible, within the min distance, and clickable
+                if (clickableObjects[closestIndex].targetObject.gameObject.GetComponent<MeshRenderer>().isVisible && closestDist <= minClickDistance && clickableObjects[closestIndex].clickable) //And it is visible, within the min distance, and clickable
                     clickableObjects[closestIndex].Click(); //Click it
         prevClickAction = clickAction;
 

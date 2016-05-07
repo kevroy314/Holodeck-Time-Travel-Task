@@ -24,7 +24,12 @@ public class Foil : ClickableObject
 
         clickStartTime = 0f;
         clickEndTime = float.MaxValue;
-        localTime = time;
+    }
+
+    public Timeline Time
+    {
+        get { return time; }
+        set { time = value; localTime = value; }
     }
 
     void Update()
