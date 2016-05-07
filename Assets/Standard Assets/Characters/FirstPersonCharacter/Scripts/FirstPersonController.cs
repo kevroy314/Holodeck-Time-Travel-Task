@@ -42,6 +42,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+        public void setMovementSpeed(float speed)
+        {
+            m_WalkSpeed = speed;
+            m_RunSpeed = speed;
+        }
+
+        public void setMouseSensitivity(float sensitivity)
+        {
+            m_MouseLook.XSensitivity = sensitivity;
+            m_MouseLook.YSensitivity = sensitivity;
+        }
+
         // Use this for initialization
         private void Start()
         {

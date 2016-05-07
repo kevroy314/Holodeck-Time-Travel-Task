@@ -72,16 +72,24 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\RandomStartLocation.cs" />
-    <Compile Include="Assets\Scripts\ClickableObject.cs" />
-    <Compile Include="Assets\Scripts\DayNightController.cs" />
-    <Compile Include="Assets\Scripts\DropGrassPrimitive.cs" />
-    <Compile Include="Assets\Scripts\FallFromSky.cs" />
-    <Compile Include="Assets\Scripts\FlyToSky.cs" />
-    <Compile Include="Assets\Scripts\Foil.cs" />
-    <Compile Include="Assets\Scripts\ItemGenerator.cs" />
-    <Compile Include="Assets\Scripts\TemporalImagingEffect.cs" />
-    <Compile Include="Assets\Scripts\TimeController.cs" />
+    <Compile Include="Assets\Scripts\Character Controller Scripts\CharacterConfigurationLoader.cs" />
+    <Compile Include="Assets\Scripts\Character Controller Scripts\CloseWithKey.cs" />
+    <Compile Include="Assets\Scripts\Character Controller Scripts\ItemClickController.cs" />
+    <Compile Include="Assets\Scripts\Character Controller Scripts\RandomStartLocation.cs" />
+    <Compile Include="Assets\Scripts\Character Controller Scripts\TemporalImagingEffect.cs" />
+    <Compile Include="Assets\Scripts\Character Controller Scripts\TimeController.cs" />
+    <Compile Include="Assets\Scripts\Environment and Audio Scripts\AmbientConfigurationLoader.cs" />
+    <Compile Include="Assets\Scripts\Environment and Audio Scripts\BoundaryManager.cs" />
+    <Compile Include="Assets\Scripts\Environment and Audio Scripts\DayNightController.cs" />
+    <Compile Include="Assets\Scripts\Environment and Audio Scripts\MusicConfigurationLoader.cs" />
+    <Compile Include="Assets\Scripts\FormValidator.cs" />
+    <Compile Include="Assets\Scripts\Grabbable.cs" />
+    <Compile Include="Assets\Scripts\InventoryManager.cs" />
+    <Compile Include="Assets\Scripts\Item Scripts\ClickableObject.cs" />
+    <Compile Include="Assets\Scripts\Item Scripts\FallFromSky.cs" />
+    <Compile Include="Assets\Scripts\Item Scripts\FlyToSky.cs" />
+    <Compile Include="Assets\Scripts\Item Scripts\Foil.cs" />
+    <Compile Include="Assets\Scripts\Item Scripts\ItemGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Plugins\Chronos\Readme.txt" />
