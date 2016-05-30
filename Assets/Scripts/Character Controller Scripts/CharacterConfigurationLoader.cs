@@ -3,9 +3,13 @@ using System.Collections;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class CharacterConfigurationLoader : MonoBehaviour {
+
+    public BinaryLogger binaryLogger;
+
     public static string configFile = "simulation.config";
     public static bool getConfigFileNameFromPlayerPrefs = true;
     public static string configFilePlayerPrefsString = "configFile";
+
     // Use this for initialization
     void Start() {
         if (getConfigFileNameFromPlayerPrefs && PlayerPrefs.HasKey(configFilePlayerPrefsString))
@@ -18,6 +22,9 @@ public class CharacterConfigurationLoader : MonoBehaviour {
         ItemClickController clicker = GetComponent<ItemClickController>();
         InventoryManager inventory = GetComponent<InventoryManager>();
 
+        binaryLogger.keys = new System.Collections.Generic.List<KeyCode>();
+        binaryLogger.buttons = new System.Collections.Generic.List<string>();
+
         INIParser ini = new INIParser();
         ini.Open(Application.dataPath + '/' + configFile);
 
@@ -25,10 +32,14 @@ public class CharacterConfigurationLoader : MonoBehaviour {
         float backwardTimeSpeed = (float)ini.ReadValue("Character", "TimeBackwardSpeed", -1.0);
         float timeTransitionDuration = (float)ini.ReadValue("Character", "TimeTransitionDuration", 0.25);
 
+        float endTime = (float)ini.ReadValue("Global", "EndTime", tcontroller.simulationEndTimeLimit);
+        tcontroller.simulationEndTimeLimit = endTime;
+
         string timeKeyString = ini.ReadValue("Character", "KeyboardTimeButton", "LeftControl");
         KeyCode timeKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), timeKeyString);
-
         string controllerTimeButton = ini.ReadValue("Character", "ControllerTimeButton", "x");
+        binaryLogger.keys.Add(timeKey);
+        binaryLogger.buttons.Add(controllerTimeButton);
 
         bool stepSoundEnabled = ini.ReadValue("Character", "StepSoundEnabled", 1) != 0;
 
@@ -40,18 +51,24 @@ public class CharacterConfigurationLoader : MonoBehaviour {
         string keyboardClickButtonString = ini.ReadValue("Character", "KeyboardClickButton", "Space");
         KeyCode keyboardClickButton = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyboardClickButtonString);
         string controllerClickButton = ini.ReadValue("Character", "ControllerClickButton", "a");
+        binaryLogger.keys.Add(keyboardClickButton);
+        binaryLogger.buttons.Add(controllerClickButton);
 
         float itemClickDistance = (float)ini.ReadValue("Character", "ItemClickDistance", 3.0);
 
         string keyboardNextItemButtonString = ini.ReadValue("Character", "KeyboardNextItemButton", "Q");
         KeyCode keyboardNextItemButton = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyboardNextItemButtonString);
         string controllerNextItemButton = ini.ReadValue("Character", "ControllerNextItemButton", "y");
+        binaryLogger.keys.Add(keyboardNextItemButton);
+        binaryLogger.buttons.Add(controllerNextItemButton);
 
         float itemPlaceDistance = (float)ini.ReadValue("Character", "ItemPlaceDistance", 3.0);
 
         string keyboardPickUpAllButtonString = ini.ReadValue("Character", "KeyboardPickUpAllButton", "P");
         KeyCode keyboardPickUpAllButton = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyboardPickUpAllButtonString);
         string controllerPickUpAllButton = ini.ReadValue("Character", "ControllerPickUpAllButton", "back");
+        binaryLogger.keys.Add(keyboardPickUpAllButton);
+        binaryLogger.buttons.Add(controllerPickUpAllButton);
 
         if (clicker != null) {
             clicker.keyClickButton = keyboardClickButton;
@@ -76,8 +93,8 @@ public class CharacterConfigurationLoader : MonoBehaviour {
             tcontroller.downTimeValue = backwardTimeSpeed;
             tcontroller.transitionDuration = timeTransitionDuration;
 
-            tcontroller.inputButton = controllerTimeButton;
-            tcontroller.keyboardInputButton = timeKey;
+            tcontroller.controllerTimeButtonString = controllerTimeButton;
+            tcontroller.keyboardTimeButton = timeKey;
         }
         if (vig != null)
         {

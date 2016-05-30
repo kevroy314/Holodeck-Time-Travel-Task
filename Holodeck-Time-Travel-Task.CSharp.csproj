@@ -84,7 +84,6 @@
     <Compile Include="Assets\Scripts\Environment and Audio Scripts\DayNightController.cs" />
     <Compile Include="Assets\Scripts\Environment and Audio Scripts\MusicConfigurationLoader.cs" />
     <Compile Include="Assets\Scripts\FormValidator.cs" />
-    <Compile Include="Assets\Scripts\Grabbable.cs" />
     <Compile Include="Assets\Scripts\InventoryManager.cs" />
     <Compile Include="Assets\Scripts\Item Scripts\ClickableObject.cs" />
     <Compile Include="Assets\Scripts\Item Scripts\FallFromSky.cs" />

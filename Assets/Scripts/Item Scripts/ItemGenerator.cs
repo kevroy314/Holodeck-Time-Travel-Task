@@ -1,4 +1,5 @@
 ﻿using Chronos;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -194,6 +195,14 @@ public class ItemGenerator : MonoBehaviour
 
     public ClickableObject[] getItems()
     {
-        throw new System.NotImplementedException();
+        List<ClickableObject> objs = new List<ClickableObject>();
+        int numItems = transform.childCount;
+        for(int i = 0; i < numItems; i++)
+        {
+            ClickableObject c = transform.GetChild(i).GetComponent<ClickableObject>();
+            if (c != null)
+                objs.Add(c);
+        }
+        return objs.ToArray();
     }
 }

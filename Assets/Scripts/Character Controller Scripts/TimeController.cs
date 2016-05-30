@@ -3,32 +3,18 @@ using System.Collections;
 using Chronos;
 
 public class TimeController : MonoBehaviour {
-    public string inputButton = "a";
-    public KeyCode keyboardInputButton = KeyCode.LeftControl;
+    public string controllerTimeButtonString = "a";
+    public KeyCode keyboardTimeButton = KeyCode.LeftControl;
     public GlobalClock clock;
     public float downTimeValue = -1f;
     public float upTimeValue = 1f;
     public float transitionDuration = 0.25f;
     private bool previousButtonState = false;
     public float simulationEndTimeLimit = 10f;
-
-	// Use this for initialization
-	void Start () {
-        string configFile;
-        if (CharacterConfigurationLoader.getConfigFileNameFromPlayerPrefs && PlayerPrefs.HasKey(CharacterConfigurationLoader.configFilePlayerPrefsString))
-            configFile = PlayerPrefs.GetString(CharacterConfigurationLoader.configFilePlayerPrefsString);
-        else
-            configFile = CharacterConfigurationLoader.configFile;
-        INIParser ini = new INIParser();
-        ini.Open(Application.dataPath + '/' + configFile);
-        float endTime = (float)ini.ReadValue("Global", "EndTime", simulationEndTimeLimit);
-        simulationEndTimeLimit = endTime;
-        ini.Close();
-    }
 	
 	// Update is called once per frame
 	void Update () {
-        bool currentButtonState = Input.GetButton(inputButton) || Input.GetKey(keyboardInputButton);
+        bool currentButtonState = Input.GetButton(controllerTimeButtonString) || Input.GetKey(keyboardTimeButton);
 
         if (clock.time > simulationEndTimeLimit)
             clock.localTimeScale = 0f;

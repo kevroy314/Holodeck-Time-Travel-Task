@@ -10,6 +10,7 @@ public class BoundaryManager : MonoBehaviour {
     private float[] delays;
     private float prevTime;
     public float transitionDuration = 2f;
+    public int currentState = 0;
 
     // Use this for initialization
     void Start () {
@@ -52,11 +53,17 @@ public class BoundaryManager : MonoBehaviour {
         for (int i = 0; i < delays.Length; i++)
         {
             if (time.deltaTime > 0 && time.time >= (delays[i] - (transitionDuration / 2)) && prevTime < (delays[i] - (transitionDuration / 2)))
+            {
                 SetColor(boundaryColors[i]);
+                currentState = i;
+            }
             if (time.deltaTime < 0 && time.time < (delays[i] + (transitionDuration / 2)) && prevTime >= (delays[i] + (transitionDuration / 2)))
             {
                 if (i - 1 >= 0)
+                {
                     SetColor(boundaryColors[i - 1]);
+                    currentState = i;
+                }
             }
         }
         prevTime = time.time;
@@ -70,16 +77,11 @@ public class BoundaryManager : MonoBehaviour {
 
     public int getCurrentState()
     {
-        throw new System.NotImplementedException();
+        return currentState;
     }
 
     public Color getCurrentColor()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public int getTransitionProgress()
-    {
-        throw new System.NotImplementedException();
+        return renderers[0].material.color;
     }
 }
