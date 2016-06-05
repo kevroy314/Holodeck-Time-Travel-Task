@@ -21,6 +21,7 @@ public class CharacterConfigurationLoader : MonoBehaviour {
         TemporalImagingEffect vig = GetComponentInChildren<TemporalImagingEffect>();
         ItemClickController clicker = GetComponent<ItemClickController>();
         InventoryManager inventory = GetComponent<InventoryManager>();
+        CullLayerByDistance culler = GetComponentInChildren<CullLayerByDistance>();
 
         binaryLogger.keys = new System.Collections.Generic.List<KeyCode>();
         binaryLogger.buttons = new System.Collections.Generic.List<string>();
@@ -32,8 +33,9 @@ public class CharacterConfigurationLoader : MonoBehaviour {
         float backwardTimeSpeed = (float)ini.ReadValue("Character", "TimeBackwardSpeed", -1.0);
         float timeTransitionDuration = (float)ini.ReadValue("Character", "TimeTransitionDuration", 0.25);
 
-        float endTime = (float)ini.ReadValue("Global", "EndTime", tcontroller.simulationEndTimeLimit);
-        tcontroller.simulationEndTimeLimit = endTime;
+        float endTime = (float)ini.ReadValue("Global", "EndTime", 120);
+
+        float invisibilityDistance = (float)ini.ReadValue("Global", "ItemInvisibilityDistance", 1000);
 
         string timeKeyString = ini.ReadValue("Character", "KeyboardTimeButton", "LeftControl");
         KeyCode timeKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), timeKeyString);
@@ -70,6 +72,12 @@ public class CharacterConfigurationLoader : MonoBehaviour {
         binaryLogger.keys.Add(keyboardPickUpAllButton);
         binaryLogger.buttons.Add(controllerPickUpAllButton);
 
+        string keyboardNextItemTypeButtonString = ini.ReadValue("Character", "KeyboardNextItemTypeButton", "E");
+        KeyCode keyboardNextItemTypeButton = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyboardNextItemTypeButtonString);
+        string controllerNextItemTypeButton = ini.ReadValue("Character", "ControllerNextItemTypeButton", "b");
+        binaryLogger.keys.Add(keyboardNextItemTypeButton);
+        binaryLogger.buttons.Add(controllerNextItemTypeButton);
+
         if (clicker != null) {
             clicker.keyClickButton = keyboardClickButton;
             clicker.controllerClickButton = controllerClickButton;
@@ -85,10 +93,15 @@ public class CharacterConfigurationLoader : MonoBehaviour {
             inventory.placeDistance = itemPlaceDistance;
             inventory.pickUpAllCode = keyboardPickUpAllButton;
             inventory.pickUpAllButtonString = controllerPickUpAllButton;
+            inventory.nextItemTypeKeyCode = keyboardNextItemTypeButton;
+            inventory.nextItemTypeButtonString = controllerNextItemTypeButton;
+
         }
 
         if (tcontroller != null)
         {
+            tcontroller.simulationEndTimeLimit = endTime;
+
             tcontroller.upTimeValue = forwardTimeSpeed;
             tcontroller.downTimeValue = backwardTimeSpeed;
             tcontroller.transitionDuration = timeTransitionDuration;
@@ -112,6 +125,12 @@ public class CharacterConfigurationLoader : MonoBehaviour {
             controller.setMovementSpeed(walkSpeed);
             controller.setMouseSensitivity(mouseLookSensitivity);
         }
+
+        if (culler != null)
+        {
+            culler.dist = invisibilityDistance;
+        }
+
         ini.Close();
     }
 }

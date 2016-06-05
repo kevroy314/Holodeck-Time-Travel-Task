@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class BinaryLogger : MonoBehaviour {
 
     public string dateTimeFormat = "";
-    public string filenameFormat = "<sub>_<trial>_<phase>_<datetime>.dat";
+    public string filenameFormat = "<sub>_<trial>_<phase>_<inv>_<datetime>.dat";
     private string header = "";
     private static int headerLength = 1024;
 
@@ -41,19 +41,22 @@ public class BinaryLogger : MonoBehaviour {
             filename = filename.Replace("<phase>", "" + PlayerPrefs.GetInt("phase"));
         else
             filename = filename.Replace("<phase>", "u");
+        if (PlayerPrefs.HasKey("inv"))
+            filename = filename.Replace("<inv>", "" + PlayerPrefs.GetInt("inv"));
+        else
+            filename = filename.Replace("<inv>", "u");
         DateTime time = DateTime.Now;
         string timeString = time.ToString(dateTimeFormat);
         filename = filename.Replace("<datetime>", timeString);
         Stream stream = new StreamWriter(filename).BaseStream;
         writer = new BinaryWriter(stream);
-
-        items = generator.getItems();
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (firstUpdate)
         {
+            items = generator.getItems();
             header = "time,f,timeScale,f,posXYZ,fff,rotXYZW,ffff,";
             for (int i = 0; i < keys.Count; i++)
                 header += "key" + i + ",b,";
@@ -70,7 +73,7 @@ public class BinaryLogger : MonoBehaviour {
             }
 
             if (header.Length < headerLength)
-                header.PadRight(headerLength);
+                header = header.PadRight(headerLength);
 
             writer.Write(header);
 
@@ -102,8 +105,38 @@ public class BinaryLogger : MonoBehaviour {
         writer.Write(c.r);
         writer.Write(c.g);
         writer.Write(c.b);
-    }
 
+        if (second)
+        {
+            Debug.Log(time.time);
+            Debug.Log(time.timeScale);
+            Debug.Log(cam.transform.position.x);
+            Debug.Log(cam.transform.position.y);
+            Debug.Log(cam.transform.position.z);
+            Debug.Log(cam.transform.rotation.x);
+            Debug.Log(cam.transform.rotation.y);
+            Debug.Log(cam.transform.rotation.z);
+            Debug.Log(cam.transform.rotation.w);
+            for (int i = 0; i < keys.Count; i++)
+                Debug.Log(Input.GetKey(keys[i]));
+            for (int i = 0; i < keys.Count; i++)
+                Debug.Log(Input.GetButton(buttons[i]));
+            for (int i = 0; i < items.Length; i++)
+            {
+                Debug.Log(items[i].transform.position.x);
+                Debug.Log(items[i].transform.position.y);
+                Debug.Log(items[i].transform.position.z);
+                Debug.Log(items[i].gameObject.transform.parent.gameObject.activeSelf);
+                Debug.Log(items[i].HasBeenClicked());
+            }
+            Debug.Log(boundaries.getCurrentState());
+            Debug.Log(c.r);
+            Debug.Log(c.g);
+            Debug.Log(c.b);
+            second = false;
+        }
+    }
+    bool second = true;
     void OnApplicationQuit()
     {
         writer.Close();

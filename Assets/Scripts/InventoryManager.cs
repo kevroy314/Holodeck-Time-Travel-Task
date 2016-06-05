@@ -25,10 +25,19 @@ public class InventoryManager : MonoBehaviour
     public string nextButtonString = "y";
     public KeyCode pickUpAllCode = KeyCode.P;
     public string pickUpAllButtonString = "back";
+    public KeyCode nextItemTypeKeyCode = KeyCode.E;
+    public string nextItemTypeButtonString = "b";
+
+    public Material upMaterial;
+    public Material downMaterial;
+    public Material infinityMaterial;
+
+    public Image typeDisplayImage;
 
     private bool previousInputState = false;
     private bool previousNextInputState = false;
     private bool previousPickUpAllInputState = false;
+    private bool previousNextItemTypeState = false;
 
     public ItemGenerator generator;
     private ClickableObject[] clickableObjects;
@@ -38,6 +47,7 @@ public class InventoryManager : MonoBehaviour
     public float closestDist = float.MaxValue;
 
     private int currentInventoryIndex = 0;
+    private int currentItemTypeIndex = 0;
 
     private bool firstCall = true;
 
@@ -47,6 +57,23 @@ public class InventoryManager : MonoBehaviour
         displayImage.material = emptyMaterial;
         audioSrc = gameObject.AddComponent<AudioSource>();
         audioSrc.clip = soundEffect;
+    }
+
+    private static System.Random rng = new System.Random();
+
+    public static List<T> Shuffle<T>(IList<T> list)
+    {
+        List<T> newList = new List<T>(list);
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+        return newList;
     }
 
     void Update()
@@ -66,6 +93,7 @@ public class InventoryManager : MonoBehaviour
                     tmp.gameObject.transform.parent.gameObject.SetActive(false);
                 }
             }
+            Shuffle<ClickableObject>(clickable);
             clickableObjects = clickable.ToArray();
             for (int i = 0; i < clickableObjects.Length; i++)
                 objectHeldList.AddFirst(i);
@@ -111,9 +139,9 @@ public class InventoryManager : MonoBehaviour
                     FallFromSky fallScript = clickableObjects[index].gameObject.GetComponent<FallFromSky>();
                     FlyToSky flyScript = clickableObjects[index].gameObject.GetComponent<FlyToSky>();
                     GameObject obj;
-                    if (fallScript != null)
+                    if (currentItemTypeIndex == 2)
                         obj = ItemGenerator.GenerateFall(fallPrefabItem, prevParent, transform.position + (transform.forward * placeDistance), prevTexture, time.time, time);
-                    else if (flyScript != null)
+                    else if (currentItemTypeIndex == 1)
                         obj = ItemGenerator.GenerateFly(flyPrefabItem, prevParent, transform.position + (transform.forward * placeDistance), prevTexture, time.time, time);
                     else
                         obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, transform.position + (transform.forward * placeDistance), prevTexture, time);
@@ -156,5 +184,27 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         previousPickUpAllInputState = pickUpAllInputState;
+
+        bool nextItemTypeState = Input.GetKey(nextItemTypeKeyCode) || Input.GetButton(nextItemTypeButtonString);
+        if(nextItemTypeState && !previousNextItemTypeState)
+        {
+            currentItemTypeIndex = (currentItemTypeIndex + 1) % 3;
+            switch (currentItemTypeIndex)
+            {
+                case 0:
+                    typeDisplayImage.material = infinityMaterial;
+                    break;
+                case 1:
+                    typeDisplayImage.material = upMaterial;
+                    break;
+                case 2:
+                    typeDisplayImage.material = downMaterial;
+                    break;
+                default:
+                    typeDisplayImage.material = null;
+                    break;
+            }
+        }
+        previousNextItemTypeState = nextItemTypeState;
     }
 }

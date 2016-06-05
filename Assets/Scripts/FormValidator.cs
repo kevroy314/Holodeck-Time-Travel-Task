@@ -10,6 +10,7 @@ public class FormValidator : MonoBehaviour {
     public Button practiceButton;
     public Button studyButton;
     public Button testButton;
+    public Toggle inversionToggle;
 	
 	// Update is called once per frame
 	void Update () {
@@ -27,21 +28,32 @@ public class FormValidator : MonoBehaviour {
         }
 	}
 
+    private void SetPlayerPrefValues(int phase)
+    {
+        PlayerPrefs.SetString("sub", subIDText.text);
+        PlayerPrefs.SetInt("trial", trialDropDown.value);
+        PlayerPrefs.SetInt("phase", phase);
+        PlayerPrefs.SetInt("inv", inversionToggle.isOn ? 1 : 0);
+    }
+
     public void BeginPractice()
     {
         PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practice.config");
+        SetPlayerPrefValues(0);
         SceneManager.LoadScene(1);
     }
 
     public void BeginStudy()
     {
         PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "study.config");
+        SetPlayerPrefValues(1);
         SceneManager.LoadScene(1);
     }
 
     public void BeginTest()
     {
         PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "test.config");
+        SetPlayerPrefValues(2);
         SceneManager.LoadScene(2);
     }
 }

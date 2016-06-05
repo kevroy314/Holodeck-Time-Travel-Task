@@ -72,6 +72,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\LoaderStateSaver.cs" />
     <Compile Include="Assets\Scripts\BinaryLogger.cs" />
     <Compile Include="Assets\Scripts\Character Controller Scripts\CharacterConfigurationLoader.cs" />
     <Compile Include="Assets\Scripts\Character Controller Scripts\CloseWithKey.cs" />
@@ -79,11 +80,13 @@
     <Compile Include="Assets\Scripts\Character Controller Scripts\RandomStartLocation.cs" />
     <Compile Include="Assets\Scripts\Character Controller Scripts\TemporalImagingEffect.cs" />
     <Compile Include="Assets\Scripts\Character Controller Scripts\TimeController.cs" />
+    <Compile Include="Assets\Scripts\CullLayerByDistance.cs" />
     <Compile Include="Assets\Scripts\Environment and Audio Scripts\AmbientConfigurationLoader.cs" />
     <Compile Include="Assets\Scripts\Environment and Audio Scripts\BoundaryManager.cs" />
     <Compile Include="Assets\Scripts\Environment and Audio Scripts\DayNightController.cs" />
     <Compile Include="Assets\Scripts\Environment and Audio Scripts\MusicConfigurationLoader.cs" />
     <Compile Include="Assets\Scripts\FormValidator.cs" />
+    <Compile Include="Assets\Scripts\HaloDisabler.cs" />
     <Compile Include="Assets\Scripts\InventoryManager.cs" />
     <Compile Include="Assets\Scripts\Item Scripts\ClickableObject.cs" />
     <Compile Include="Assets\Scripts\Item Scripts\FallFromSky.cs" />

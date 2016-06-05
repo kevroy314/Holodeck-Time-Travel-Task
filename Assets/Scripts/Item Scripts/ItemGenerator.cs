@@ -32,7 +32,6 @@ public class ItemGenerator : MonoBehaviour
         ini.Open(Application.dataPath + '/' + configFile);
         string imgRootPath = Application.dataPath + "/ItemImages/";
         int numItems = ini.ReadValue("Global", "NumItems", 0);
-        invertTimeline = ini.ReadValue("Global", "InvertItemOrder", invertTimeline ? 1 : 0) != 0;
         float y = (float)ini.ReadValue("Global", "ItemHeight", itemHeight);
         itemHeight = y;
         float fallTime = (float)ini.ReadValue("Global", "ItemFallTime", itemFallTime);
@@ -41,6 +40,9 @@ public class ItemGenerator : MonoBehaviour
         itemInactiveHeight = inactiveHeight;
         float endTime = (float)ini.ReadValue("Global", "EndTime", 10.0);
         string itemKey = "Item";
+
+        if (PlayerPrefs.HasKey("LoaderInversion"))
+            invertTimeline = PlayerPrefs.GetInt("LoaderInversion") != 0;
 
         Vector3[] locations = new Vector3[numItems];
         float[] delays = new float[numItems];
@@ -108,6 +110,9 @@ public class ItemGenerator : MonoBehaviour
     public static GameObject GenerateFall(GameObject fallPrefabItem, Transform parent, Vector3 location, Texture2D image, float delay, Timeline time)
     {
         GameObject tmp = Instantiate(fallPrefabItem);
+        tmp.layer = 5;
+        tmp.transform.GetChild(0).gameObject.layer = 5;
+        tmp.transform.GetChild(1).gameObject.layer = 5;
         DisableAllCollidersInObject(tmp);
         tmp.transform.parent = parent;
         tmp.transform.localPosition = location;
@@ -127,6 +132,9 @@ public class ItemGenerator : MonoBehaviour
     public static GameObject GenerateFly(GameObject flyPrefabItem, Transform parent, Vector3 location, Texture2D image, float delay, Timeline time)
     {
         GameObject tmp = Instantiate(flyPrefabItem);
+        tmp.layer = 5;
+        tmp.transform.GetChild(0).gameObject.layer = 5;
+        tmp.transform.GetChild(1).gameObject.layer = 5;
         DisableAllCollidersInObject(tmp);
         tmp.transform.parent = parent;
         tmp.transform.localPosition = location;
@@ -146,6 +154,9 @@ public class ItemGenerator : MonoBehaviour
     public static GameObject GenerateFoil(GameObject foilPrefabItem, Transform parent, Vector3 location, Texture2D image, Timeline time)
     {
         GameObject tmp = Instantiate(foilPrefabItem);
+        tmp.layer = 5;
+        tmp.transform.GetChild(0).gameObject.layer = 5;
+        tmp.transform.GetChild(1).gameObject.layer = 5;
         DisableAllCollidersInObject(tmp);
         if (image != null)
         {
