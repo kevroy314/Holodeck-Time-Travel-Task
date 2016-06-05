@@ -210,7 +210,7 @@ public class ItemGenerator : MonoBehaviour
         int numItems = transform.childCount;
         for(int i = 0; i < numItems; i++)
         {
-            ClickableObject c = transform.GetChild(i).GetComponent<ClickableObject>();
+            ClickableObject c = transform.GetChild(i).GetComponentInChildren<ClickableObject>();
             if (c != null)
                 objs.Add(c);
         }

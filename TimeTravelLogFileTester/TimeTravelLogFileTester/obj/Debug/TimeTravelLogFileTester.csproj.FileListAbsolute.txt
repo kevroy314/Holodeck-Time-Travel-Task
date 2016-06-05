@@ -1,0 +1,6 @@
+c:\users\kevin\documents\visual studio 2015\Projects\TimeTravelLogFileTester\TimeTravelLogFileTester\bin\Debug\TimeTravelLogFileTester.exe.config
+c:\users\kevin\documents\visual studio 2015\Projects\TimeTravelLogFileTester\TimeTravelLogFileTester\bin\Debug\TimeTravelLogFileTester.exe
+c:\users\kevin\documents\visual studio 2015\Projects\TimeTravelLogFileTester\TimeTravelLogFileTester\bin\Debug\TimeTravelLogFileTester.pdb
+c:\users\kevin\documents\visual studio 2015\Projects\TimeTravelLogFileTester\TimeTravelLogFileTester\obj\Debug\TimeTravelLogFileTester.csprojResolveAssemblyReference.cache
+c:\users\kevin\documents\visual studio 2015\Projects\TimeTravelLogFileTester\TimeTravelLogFileTester\obj\Debug\TimeTravelLogFileTester.exe
+c:\users\kevin\documents\visual studio 2015\Projects\TimeTravelLogFileTester\TimeTravelLogFileTester\obj\Debug\TimeTravelLogFileTester.pdb

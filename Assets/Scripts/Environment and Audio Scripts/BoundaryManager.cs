@@ -8,12 +8,18 @@ public class BoundaryManager : MonoBehaviour {
     public MeshRenderer[] renderers;
     private Color[] boundaryColors;
     private float[] delays;
-    private float prevTime;
     public float transitionDuration = 2f;
     public int currentState = 0;
 
+    private Color[] profile;
+    public float profileInterval = 0.003f;
+
+    public AnimationCurve r;
+    public AnimationCurve g;
+    public AnimationCurve b;
+
     // Use this for initialization
-    void Start () {
+    void Start() {
         if (CharacterConfigurationLoader.getConfigFileNameFromPlayerPrefs && PlayerPrefs.HasKey(CharacterConfigurationLoader.configFilePlayerPrefsString))
             configFile = PlayerPrefs.GetString(CharacterConfigurationLoader.configFilePlayerPrefsString);
         else
@@ -45,34 +51,50 @@ public class BoundaryManager : MonoBehaviour {
         }
 
         ini.Close();
+
+        float endTime = delays[delays.Length - 1] + transitionDuration / 2 + 1;
+        int numPoints = (int)Mathf.Ceil(endTime / profileInterval);
+        profile = new Color[numPoints];
+        int state = 0;
+        for (int i = 0; i < profile.Length; i++)
+        {
+            float t = i * profileInterval;
+            profile[i] = boundaryColors[state];
+            if (state + 1 < boundaryColors.Length && t > delays[state + 1])
+                state++;
+        }
+        //Add color lerps
+        for (int i = 1; i < boundaryColors.Length; i++)
+        {
+            int startIndex = Mathf.FloorToInt((delays[i] - (transitionDuration/2)) / profileInterval);
+            int endIndex = Mathf.CeilToInt((delays[i] + (transitionDuration / 2)) / profileInterval);
+            for (int j = startIndex; j <= endIndex; j++) {
+                float lerp = (((float)j - (float)startIndex) / ((float)endIndex - (float)startIndex));
+                profile[j] = Color.Lerp(boundaryColors[i - 1], boundaryColors[i], lerp);
+            }
+        }
+
+        for (int i = 0; i < profile.Length; i++)
+        {
+            r.AddKey(i * profileInterval, profile[i].r);
+            g.AddKey(i * profileInterval, profile[i].g);
+            b.AddKey(i * profileInterval, profile[i].b);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < delays.Length; i++)
-        {
-            if (time.deltaTime > 0 && time.time >= (delays[i] - (transitionDuration / 2)) && prevTime < (delays[i] - (transitionDuration / 2)))
-            {
-                SetColor(boundaryColors[i]);
-                currentState = i;
-            }
-            if (time.deltaTime < 0 && time.time < (delays[i] + (transitionDuration / 2)) && prevTime >= (delays[i] + (transitionDuration / 2)))
-            {
-                if (i - 1 >= 0)
-                {
-                    SetColor(boundaryColors[i - 1]);
-                    currentState = i;
-                }
-            }
-        }
-        prevTime = time.time;
-    }
-
-    void SetColor(Color c)
-    {
+        if(time.deltaTime > 0)
+            while (currentState * profileInterval < time.time)
+                currentState++;
+        else if (time.deltaTime < 0)
+            while (currentState * profileInterval > time.time)
+                currentState--;
+        if (currentState > profile.Length - 1)
+            currentState = profile.Length - 1;
         for (int i = 0; i < renderers.Length; i++)
-            iTween.ColorTo(renderers[i].gameObject, c, transitionDuration);
+            renderers[i].material.color = profile[currentState];
     }
 
     public int getCurrentState()

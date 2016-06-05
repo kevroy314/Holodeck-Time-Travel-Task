@@ -79,6 +79,7 @@ public class BinaryLogger : MonoBehaviour {
 
             firstUpdate = false;
         }
+        writer.Write(DateTime.Now.ToBinary());
         writer.Write(time.time);
         writer.Write(time.timeScale);
         writer.Write(cam.transform.position.x);
@@ -105,39 +106,14 @@ public class BinaryLogger : MonoBehaviour {
         writer.Write(c.r);
         writer.Write(c.g);
         writer.Write(c.b);
-
-        if (second)
-        {
-            Debug.Log(time.time);
-            Debug.Log(time.timeScale);
-            Debug.Log(cam.transform.position.x);
-            Debug.Log(cam.transform.position.y);
-            Debug.Log(cam.transform.position.z);
-            Debug.Log(cam.transform.rotation.x);
-            Debug.Log(cam.transform.rotation.y);
-            Debug.Log(cam.transform.rotation.z);
-            Debug.Log(cam.transform.rotation.w);
-            for (int i = 0; i < keys.Count; i++)
-                Debug.Log(Input.GetKey(keys[i]));
-            for (int i = 0; i < keys.Count; i++)
-                Debug.Log(Input.GetButton(buttons[i]));
-            for (int i = 0; i < items.Length; i++)
-            {
-                Debug.Log(items[i].transform.position.x);
-                Debug.Log(items[i].transform.position.y);
-                Debug.Log(items[i].transform.position.z);
-                Debug.Log(items[i].gameObject.transform.parent.gameObject.activeSelf);
-                Debug.Log(items[i].HasBeenClicked());
-            }
-            Debug.Log(boundaries.getCurrentState());
-            Debug.Log(c.r);
-            Debug.Log(c.g);
-            Debug.Log(c.b);
-            second = false;
-        }
     }
-    bool second = true;
+
     void OnApplicationQuit()
+    {
+        writer.Close();
+    }
+
+    void OnDisable()
     {
         writer.Close();
     }
