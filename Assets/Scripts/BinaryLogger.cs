@@ -54,9 +54,9 @@ public class BinaryLogger : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        items = generator.getItems();
         if (firstUpdate)
         {
-            items = generator.getItems();
             header = "time,f,timeScale,f,posXYZ,fff,rotXYZW,ffff,";
             for (int i = 0; i < keys.Count; i++)
                 header += "key" + i + ",b,";
@@ -91,8 +91,12 @@ public class BinaryLogger : MonoBehaviour {
         writer.Write(cam.transform.rotation.w);
         for(int i = 0; i < keys.Count; i++)
             writer.Write(Input.GetKey(keys[i]));
-        for (int i = 0; i < keys.Count; i++)
-            writer.Write(Input.GetButton(buttons[i]));
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            bool state = false;
+            try { state = Input.GetButton(buttons[i]); } catch (ArgumentException) { }
+            writer.Write(state);
+        }
         for(int i = 0; i < items.Length; i++)
         {
             writer.Write(items[i].transform.position.x);
@@ -106,6 +110,11 @@ public class BinaryLogger : MonoBehaviour {
         writer.Write(c.r);
         writer.Write(c.g);
         writer.Write(c.b);
+    }
+
+    public void SwapItem(int index, ClickableObject newItem)
+    {
+        items[index] = newItem;
     }
 
     void OnApplicationQuit()

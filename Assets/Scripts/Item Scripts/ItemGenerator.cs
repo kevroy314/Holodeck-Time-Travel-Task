@@ -1,6 +1,7 @@
 ﻿using Chronos;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class ItemGenerator : MonoBehaviour
@@ -14,6 +15,7 @@ public class ItemGenerator : MonoBehaviour
     public static double itemInactiveHeight = 10.0;
     public bool invertTimeline = false;
     public Timeline time;
+    public BinaryLogger logger;
 
     enum ItemTypes
     {
@@ -48,6 +50,7 @@ public class ItemGenerator : MonoBehaviour
         float[] delays = new float[numItems];
         ItemTypes[] types = new ItemTypes[numItems];
         Texture2D[] images = new Texture2D[numItems];
+        Texture2D[] clickImages = new Texture2D[numItems];
         for (int i = 0; i < numItems; i++)
         {
             float x = (float)ini.ReadValue("Items", itemKey + i + "X", 0.0);
@@ -72,6 +75,7 @@ public class ItemGenerator : MonoBehaviour
                     break;
             }
             string imageFilename = imgRootPath + ini.ReadValue("Items", itemKey + i + "Image", "error.png");
+            string clickImageFilename = imgRootPath + ini.ReadValue("Items", itemKey + i + "ClickImage", "error.png");
             byte[] fileData;
             if (File.Exists(imageFilename))
             {
@@ -79,6 +83,11 @@ public class ItemGenerator : MonoBehaviour
                 Texture2D itemTexture = new Texture2D(400, 400);
                 itemTexture.LoadImage(fileData);
                 images[i] = itemTexture;
+
+                fileData = File.ReadAllBytes(clickImageFilename);
+                Texture2D clickItemTexture = new Texture2D(400, 400);
+                clickItemTexture.LoadImage(fileData);
+                clickImages[i] = clickItemTexture;
             }
             else
                 Debug.Log("Could not load texture (" + imageFilename + "). File does not exist.");
@@ -99,17 +108,18 @@ public class ItemGenerator : MonoBehaviour
         for (int i = 0; i < locations.Length; i++)
         {
             if (types[i] == ItemTypes.Fall)
-                GenerateFall(fallPrefabItem, transform, locations[i], images[i], delays[i], time);
+                GenerateFall(fallPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i);
             else if (types[i] == ItemTypes.Fly)
-                GenerateFly(flyPrefabItem, transform, locations[i], images[i], delays[i], time);
+                GenerateFly(flyPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i);
             else if (types[i] == ItemTypes.Foil)
-                GenerateFoil(foilPrefabItem, transform, locations[i], images[i], time);
+                GenerateFoil(foilPrefabItem, transform, locations[i], images[i], clickImages[i], time, i);
         }
     }
 
-    public static GameObject GenerateFall(GameObject fallPrefabItem, Transform parent, Vector3 location, Texture2D image, float delay, Timeline time)
+    public static GameObject GenerateFall(GameObject fallPrefabItem, Transform parent, Vector3 location, Texture2D image, Texture2D clickImage, float delay, Timeline time, int itemNum)
     {
         GameObject tmp = Instantiate(fallPrefabItem);
+        tmp.name = "Item" + itemNum.ToString().PadLeft(2, '0');
         tmp.layer = 5;
         tmp.transform.GetChild(0).gameObject.layer = 5;
         tmp.transform.GetChild(1).gameObject.layer = 5;
@@ -126,12 +136,15 @@ public class ItemGenerator : MonoBehaviour
         script.transitionDuration = (float)itemFallTime;
         script.startPos = new Vector3(script.startPos.x, (float)itemInactiveHeight, script.startPos.z);
         script.time = time;
+        script.mainTexture = image;
+        script.clickTexture = clickImage;
         return tmp;
     }
 
-    public static GameObject GenerateFly(GameObject flyPrefabItem, Transform parent, Vector3 location, Texture2D image, float delay, Timeline time)
+    public static GameObject GenerateFly(GameObject flyPrefabItem, Transform parent, Vector3 location, Texture2D image, Texture2D clickImage, float delay, Timeline time, int itemNum)
     {
         GameObject tmp = Instantiate(flyPrefabItem);
+        tmp.name = "Item" + itemNum.ToString().PadLeft(2, '0');
         tmp.layer = 5;
         tmp.transform.GetChild(0).gameObject.layer = 5;
         tmp.transform.GetChild(1).gameObject.layer = 5;
@@ -148,12 +161,15 @@ public class ItemGenerator : MonoBehaviour
         script.transitionDuration = (float)itemFallTime;
         script.endPos = new Vector3(script.endPos.x, (float)itemInactiveHeight, script.endPos.z);
         script.time = time;
+        script.mainTexture = image;
+        script.clickTexture = clickImage;
         return tmp;
     }
 
-    public static GameObject GenerateFoil(GameObject foilPrefabItem, Transform parent, Vector3 location, Texture2D image, Timeline time)
+    public static GameObject GenerateFoil(GameObject foilPrefabItem, Transform parent, Vector3 location, Texture2D image, Texture2D clickImage, Timeline time, int itemNum)
     {
         GameObject tmp = Instantiate(foilPrefabItem);
+        tmp.name = "Item" + itemNum.ToString().PadLeft(2, '0');
         tmp.layer = 5;
         tmp.transform.GetChild(0).gameObject.layer = 5;
         tmp.transform.GetChild(1).gameObject.layer = 5;
@@ -165,7 +181,10 @@ public class ItemGenerator : MonoBehaviour
         }
         tmp.transform.parent = parent;
         tmp.transform.localPosition = location;
-        tmp.GetComponentInChildren<Foil>().Time = time;
+        Foil script = tmp.GetComponentInChildren<Foil>();
+        script.Time = time;
+        script.mainTexture = image;
+        script.clickTexture = clickImage;
         return tmp;
     }
 
@@ -177,7 +196,7 @@ public class ItemGenerator : MonoBehaviour
         try { obj.GetComponent<BoxCollider>().enabled = false; } catch (System.Exception) { }
     }
 
-    private static void flipTexture(GameObject obj)
+    public static void flipTexture(GameObject obj)
     {
         //Get the mesh filter for this cube
         MeshFilter mf = obj.GetComponentInChildren<MeshFilter>();
@@ -214,6 +233,7 @@ public class ItemGenerator : MonoBehaviour
             if (c != null)
                 objs.Add(c);
         }
-        return objs.ToArray();
+        
+        return objs.OrderBy(o => o.name).ToArray();
     }
 }

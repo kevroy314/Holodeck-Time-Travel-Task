@@ -134,17 +134,20 @@ public class InventoryManager : MonoBehaviour
                 {
                     int index = objectHeldList.First.Value;
                     objectHeldList.RemoveFirst();
-                    Texture2D prevTexture = (Texture2D)clickableObjects[index].gameObject.GetComponent<MeshRenderer>().material.mainTexture;
+                    Texture2D prevTexture = clickableObjects[index].mainTexture;
+                    Texture2D prevClickTexture = clickableObjects[index].clickTexture;
                     Transform prevParent = clickableObjects[index].gameObject.transform.parent.transform.parent;
                     FallFromSky fallScript = clickableObjects[index].gameObject.GetComponent<FallFromSky>();
                     FlyToSky flyScript = clickableObjects[index].gameObject.GetComponent<FlyToSky>();
+                    int prevItemNum = int.Parse(clickableObjects[index].gameObject.transform.parent.gameObject.name.Substring(4));
+                    Debug.Log(prevItemNum);
                     GameObject obj;
                     if (currentItemTypeIndex == 2)
-                        obj = ItemGenerator.GenerateFall(fallPrefabItem, prevParent, transform.position + (transform.forward * placeDistance), prevTexture, time.time, time);
+                        obj = ItemGenerator.GenerateFall(fallPrefabItem, prevParent, transform.position + (transform.forward * placeDistance), prevTexture, prevClickTexture, time.time, time, prevItemNum);
                     else if (currentItemTypeIndex == 1)
-                        obj = ItemGenerator.GenerateFly(flyPrefabItem, prevParent, transform.position + (transform.forward * placeDistance), prevTexture, time.time, time);
+                        obj = ItemGenerator.GenerateFly(flyPrefabItem, prevParent, transform.position + (transform.forward * placeDistance), prevTexture, prevClickTexture, time.time, time, prevItemNum);
                     else
-                        obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, transform.position + (transform.forward * placeDistance), prevTexture, time);
+                        obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, transform.position + (transform.forward * placeDistance), prevTexture, prevClickTexture, time, prevItemNum);
                     GameObject oldObj = clickableObjects[index].gameObject.transform.parent.gameObject;
                     clickableObjects[index] = obj.GetComponentInChildren<ClickableObject>();
                     DestroyImmediate(oldObj);

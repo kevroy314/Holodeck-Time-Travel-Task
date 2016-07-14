@@ -22,6 +22,7 @@ public class CharacterConfigurationLoader : MonoBehaviour {
         ItemClickController clicker = GetComponent<ItemClickController>();
         InventoryManager inventory = GetComponent<InventoryManager>();
         CullLayerByDistance culler = GetComponentInChildren<CullLayerByDistance>();
+        BubbleRenderer bubble = GetComponentInChildren<BubbleRenderer>();
 
         binaryLogger.keys = new System.Collections.Generic.List<KeyCode>();
         binaryLogger.buttons = new System.Collections.Generic.List<string>();
@@ -78,6 +79,26 @@ public class CharacterConfigurationLoader : MonoBehaviour {
         binaryLogger.keys.Add(keyboardNextItemTypeButton);
         binaryLogger.buttons.Add(controllerNextItemTypeButton);
 
+        string keyboardInvisibilityBubbleButtonString = ini.ReadValue("Character", "KeyboardInvisibilityBubbleButton", "");
+        KeyCode keyboardInvisibilityBubbleButton;
+        if (keyboardInvisibilityBubbleButtonString == "")
+            keyboardInvisibilityBubbleButton = KeyCode.None;
+        else
+            keyboardInvisibilityBubbleButton = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyboardInvisibilityBubbleButtonString);
+        string controllerInvisibilityBubbleButton = ini.ReadValue("Character", "ControllerInvisibilityBubbleButton", "");
+        binaryLogger.keys.Add(keyboardInvisibilityBubbleButton);
+        binaryLogger.buttons.Add(controllerInvisibilityBubbleButton);
+
+        string toggleInvisibilityButtonString = ini.ReadValue("Global", "ToggleInvisibilityButton", "");
+        KeyCode toggleInvisibilityButton;
+        if (toggleInvisibilityButtonString == "")
+            toggleInvisibilityButton = KeyCode.None;
+        else
+            toggleInvisibilityButton = (KeyCode)System.Enum.Parse(typeof(KeyCode), toggleInvisibilityButtonString);
+        binaryLogger.keys.Add(toggleInvisibilityButton);
+
+        bool invisibilityOnAtStart = ini.ReadValue("Global", "InvisibilityOnAtStart", 1) != 0;
+
         if (clicker != null) {
             clicker.keyClickButton = keyboardClickButton;
             clicker.controllerClickButton = controllerClickButton;
@@ -95,7 +116,6 @@ public class CharacterConfigurationLoader : MonoBehaviour {
             inventory.pickUpAllButtonString = controllerPickUpAllButton;
             inventory.nextItemTypeKeyCode = keyboardNextItemTypeButton;
             inventory.nextItemTypeButtonString = controllerNextItemTypeButton;
-
         }
 
         if (tcontroller != null)
@@ -129,6 +149,15 @@ public class CharacterConfigurationLoader : MonoBehaviour {
         if (culler != null)
         {
             culler.dist = invisibilityDistance;
+            culler.toggleInvisibilityButton = toggleInvisibilityButton;
+            culler.invisibilityEnabled = invisibilityOnAtStart;
+        }
+
+        if(bubble != null)
+        {
+            bubble.keyboardInvisibilityBubbleButton = keyboardInvisibilityBubbleButton;
+            bubble.controllerInvisibilityBubbleButton = controllerInvisibilityBubbleButton;
+            bubble.distance = invisibilityDistance;
         }
 
         ini.Close();

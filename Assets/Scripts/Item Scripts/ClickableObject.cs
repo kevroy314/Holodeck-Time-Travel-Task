@@ -16,6 +16,8 @@ public class ClickableObject : MonoBehaviour
     public Timeline localTime;
     private bool hasBeenClicked = false;
     private AudioSource soundEffect;
+    public Texture2D clickTexture;
+    public Texture2D mainTexture;
 
     // Use this for initialization
     public void StartI()
@@ -34,11 +36,23 @@ public class ClickableObject : MonoBehaviour
     // Update is called once per frame
     public void UpdateI()
     {
-        if (hasBeenClicked) return;
+
         if (localTime.time > clickStartTime && localTime.time < clickEndTime)
+        {
             clickable = true;
+            gameObject.GetComponent<MeshRenderer>().material.mainTexture = clickTexture;
+            ItemGenerator.flipTexture(gameObject);
+        }
         else
+        {
             clickable = false;
+            gameObject.GetComponent<MeshRenderer>().material.mainTexture = mainTexture;
+            ItemGenerator.flipTexture(gameObject);
+        }
+
+        if (hasBeenClicked)
+            return;
+
         if (clickable && !previousClickable)
         {
             iTween.PunchScale(targetObject, pulseHash);
@@ -51,6 +65,7 @@ public class ClickableObject : MonoBehaviour
             halo.GetType().GetProperty("enabled").SetValue(halo, false, null);
             iTween.Stop(targetObject);
         }
+
         previousClickable = clickable;
     }
 
