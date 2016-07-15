@@ -26,6 +26,8 @@ public class BinaryLogger : MonoBehaviour {
 
     private bool firstUpdate = true;
 
+    private int expectedNumItems;
+
 	// Use this for initialization
 	void Start () {
         string filename = filenameFormat;
@@ -57,10 +59,11 @@ public class BinaryLogger : MonoBehaviour {
         items = generator.getItems();
         if (firstUpdate)
         {
+            expectedNumItems = generator.expectedNumItems;
             header = "time,f,timeScale,f,posXYZ,fff,rotXYZW,ffff,";
             for (int i = 0; i < keys.Count; i++)
                 header += "key" + i + ",b,";
-            for (int i = 0; i < keys.Count; i++)
+            for (int i = 0; i < buttons.Count; i++)
                 header += "button" + i + ",b,";
             for (int i = 0; i < items.Length; i++)
                 header += "itemXYZAC" + i + ",fffbb,";
@@ -97,13 +100,27 @@ public class BinaryLogger : MonoBehaviour {
             try { state = Input.GetButton(buttons[i]); } catch (ArgumentException) { }
             writer.Write(state);
         }
-        for(int i = 0; i < items.Length; i++)
+        for (int i = 0; i < expectedNumItems; i++)
         {
-            writer.Write(items[i].transform.position.x);
-            writer.Write(items[i].transform.position.y);
-            writer.Write(items[i].transform.position.z);
-            writer.Write(items[i].gameObject.transform.parent.gameObject.activeSelf);
-            writer.Write(items[i].HasBeenClicked());
+            float _x = 0;
+            float _y = 0;
+            float _z = 0;
+            bool _activeSelf = false;
+            bool _hasBeenClicked = false;
+            try
+            {
+                _x = items[i].transform.position.x;
+                _y = items[i].transform.position.y;
+                _z = items[i].transform.position.z;
+                _activeSelf = items[i].gameObject.transform.parent.gameObject.activeSelf;
+                _hasBeenClicked = items[i].HasBeenClicked();
+            }
+            catch (Exception) { };
+            writer.Write(_x);
+            writer.Write(_y);
+            writer.Write(_z);
+            writer.Write(_activeSelf);
+            writer.Write(_hasBeenClicked);
         }
         writer.Write(boundaries.getCurrentState());
         Color c = boundaries.getCurrentColor();

@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.VR;
 
 public class FormValidator : MonoBehaviour {
 
@@ -38,6 +39,7 @@ public class FormValidator : MonoBehaviour {
 
     public void BeginPractice()
     {
+        VRSettings.enabled = true;
         PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practice.config");
         SetPlayerPrefValues(0);
         SceneManager.LoadScene(1);
@@ -45,6 +47,7 @@ public class FormValidator : MonoBehaviour {
 
     public void BeginStudy()
     {
+        VRSettings.enabled = true;
         PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "study.config");
         SetPlayerPrefValues(1);
         SceneManager.LoadScene(1);
@@ -52,6 +55,7 @@ public class FormValidator : MonoBehaviour {
 
     public void BeginTest()
     {
+        VRSettings.enabled = true;
         PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "test.config");
         SetPlayerPrefValues(2);
         SceneManager.LoadScene(2);

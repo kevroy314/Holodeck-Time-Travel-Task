@@ -16,6 +16,7 @@ public class ItemGenerator : MonoBehaviour
     public bool invertTimeline = false;
     public Timeline time;
     public BinaryLogger logger;
+    public int expectedNumItems;
 
     enum ItemTypes
     {
@@ -34,6 +35,7 @@ public class ItemGenerator : MonoBehaviour
         ini.Open(Application.dataPath + '/' + configFile);
         string imgRootPath = Application.dataPath + "/ItemImages/";
         int numItems = ini.ReadValue("Global", "NumItems", 0);
+        expectedNumItems = numItems;
         float y = (float)ini.ReadValue("Global", "ItemHeight", itemHeight);
         itemHeight = y;
         float fallTime = (float)ini.ReadValue("Global", "ItemFallTime", itemFallTime);

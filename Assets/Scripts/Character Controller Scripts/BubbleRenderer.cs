@@ -10,7 +10,7 @@ public class BubbleRenderer : MonoBehaviour {
 
     private bool visible;
     private MeshRenderer meshRenderer;
-
+    public float verticalPosition = 0f;
     public float distance = 10f;
 
     void Start()
@@ -20,8 +20,8 @@ public class BubbleRenderer : MonoBehaviour {
     }
 	// Update is called once per frame
 	void Update () {
-        transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
-        transform.localScale = new Vector3(distance*2, 0.1f, distance*2);
+        transform.position = new Vector3(transform.position.x, verticalPosition, transform.position.z);
+        transform.localScale = new Vector3(distance*2/10, 1f, distance*2/10);
         if (keyboardInvisibilityBubbleButton != KeyCode.None && controllerInvisibilityBubbleButton != "")
         {
             bool keyState = Input.GetKey(keyboardInvisibilityBubbleButton);

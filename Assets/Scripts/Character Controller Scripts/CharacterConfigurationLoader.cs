@@ -12,17 +12,19 @@ public class CharacterConfigurationLoader : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        transform.position = new Vector3(transform.position.x, 1f, transform.position.z);
         if (getConfigFileNameFromPlayerPrefs && PlayerPrefs.HasKey(configFilePlayerPrefsString))
             configFile = PlayerPrefs.GetString(configFilePlayerPrefsString);
 
         FirstPersonController controller = GetComponent<FirstPersonController>();
         TimeController tcontroller = GetComponent<TimeController>();
         AudioSource audio = GetComponent<AudioSource>();
-        TemporalImagingEffect vig = GetComponentInChildren<TemporalImagingEffect>();
         ItemClickController clicker = GetComponent<ItemClickController>();
         InventoryManager inventory = GetComponent<InventoryManager>();
-        CullLayerByDistance culler = GetComponentInChildren<CullLayerByDistance>();
         BubbleRenderer bubble = GetComponentInChildren<BubbleRenderer>();
+        TemporalImagingEffect vig = transform.parent.gameObject.GetComponentInChildren<TemporalImagingEffect>();
+        CullLayerByDistance culler = transform.parent.gameObject.GetComponentInChildren<CullLayerByDistance>();
+        AugmentedController augControl = GetComponent<AugmentedController>();
 
         binaryLogger.keys = new System.Collections.Generic.List<KeyCode>();
         binaryLogger.buttons = new System.Collections.Generic.List<string>();
@@ -98,6 +100,30 @@ public class CharacterConfigurationLoader : MonoBehaviour {
         binaryLogger.keys.Add(toggleInvisibilityButton);
 
         bool invisibilityOnAtStart = ini.ReadValue("Global", "InvisibilityOnAtStart", 1) != 0;
+        ////////////////////
+        string keyboardRotationButtonString = ini.ReadValue("Character", "KeyboardRotationButton", "R");
+        KeyCode keyboardRotationButton = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyboardRotationButtonString);
+        binaryLogger.keys.Add(keyboardRotationButton);
+
+        float defaultLookAngle = (float)ini.ReadValue("Character", "DefaultLookAngle", 0.2);
+        float headHeight = (float)ini.ReadValue("Character", "HeadHeight", 0.9);
+        float forwardSpeed = (float)ini.ReadValue("Character", "ForwardSpeed", 3);
+        float minAxisTilt = (float)ini.ReadValue("Character", "MinAxisTilt", 0.01);
+        float minMovementOffset = (float)ini.ReadValue("Character", "MinMovementOffset", 0.1);
+
+        bool rotationEnabled = ini.ReadValue("Character", "RotationEnabled", 0) != 0;
+
+
+        if (augControl != null)
+        {
+            augControl.rotationButtonKey = keyboardRotationButton;
+            augControl.defaultLookAngle = defaultLookAngle;
+            augControl.headHeight = headHeight;
+            augControl.forwardSpeed = forwardSpeed;
+            augControl.minAxisTilt = minAxisTilt;
+            augControl.minMovementOffset = minMovementOffset;
+            augControl.rotationEnabled = rotationEnabled;
+        }
 
         if (clicker != null) {
             clicker.keyClickButton = keyboardClickButton;

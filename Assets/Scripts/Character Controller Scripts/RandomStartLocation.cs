@@ -43,7 +43,7 @@ public class RandomStartLocation : MonoBehaviour {
             PlayerPrefs.SetInt(playerPrefsString, 0);
 
         int locationIndex = PlayerPrefs.GetInt(playerPrefsString);
-
+        Debug.Log("Starting in location " + locationIndex);
         transform.localPosition = startPositions[locationIndex];
         transform.localRotation = startRotations[locationIndex];
 
