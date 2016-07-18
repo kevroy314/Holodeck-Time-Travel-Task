@@ -19,9 +19,38 @@ Platform assembly: C:\Users\Science\Documents\GitHub\Holodeck-Time-Travel-Task\H
 Loading C:\Users\Science\Documents\GitHub\Holodeck-Time-Travel-Task\Holodeck-Time-Travel-Task\Builds\TimeTravelTask_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
 Platform assembly: C:\Users\Science\Documents\GitHub\Holodeck-Time-Travel-Task\Holodeck-Time-Travel-Task\Builds\TimeTravelTask_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
 Loading C:\Users\Science\Documents\GitHub\Holodeck-Time-Travel-Task\Holodeck-Time-Travel-Task\Builds\TimeTravelTask_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.184 seconds
+- Completed reload, in  0.175 seconds
 Platform assembly: C:\Users\Science\Documents\GitHub\Holodeck-Time-Travel-Task\Holodeck-Time-Travel-Task\Builds\TimeTravelTask_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Science\Documents\GitHub\Holodeck-Time-Travel-Task\Holodeck-Time-Travel-Task\Builds\TimeTravelTask_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 3840x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 0.556544 ms
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 2780 -> priority: 1 
+  Thread -> id: 90c -> priority: 1 
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 3.545346 ms
+
+Unloading 32 unused Assets to reduce memory usage. Loaded Objects now: 987.
+Total: 0.456448 ms (FindLiveObjects: 0.042496 ms CreateObjectMapping: 0.022016 ms MarkObjects: 0.207360 ms  DeleteObjects: 0.184064 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 3.908867 ms
+
+Unloading 101 unused Assets to reduce memory usage. Loaded Objects now: 1035.
+Total: 0.647936 ms (FindLiveObjects: 0.050944 ms CreateObjectMapping: 0.024064 ms MarkObjects: 0.337152 ms  DeleteObjects: 0.235520 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.522689 ms
+
+Unloading 30 unused Assets to reduce memory usage. Loaded Objects now: 997.
+Total: 0.437248 ms (FindLiveObjects: 0.056576 ms CreateObjectMapping: 0.022272 ms MarkObjects: 0.222976 ms  DeleteObjects: 0.134912 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 4.813315 ms
+
+Unloading 101 unused Assets to reduce memory usage. Loaded Objects now: 1045.
+Total: 0.587264 ms (FindLiveObjects: 0.072448 ms CreateObjectMapping: 0.033792 ms MarkObjects: 0.320256 ms  DeleteObjects: 0.160512 ms)
+

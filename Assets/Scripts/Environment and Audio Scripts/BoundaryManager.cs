@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Chronos;
+using System;
 
 public class BoundaryManager : MonoBehaviour {
     private string configFile = CharacterConfigurationLoader.configFile;
@@ -18,8 +19,13 @@ public class BoundaryManager : MonoBehaviour {
     public AnimationCurve g;
     public AnimationCurve b;
 
+    public bool invertTimeline = false;
+
     // Use this for initialization
     void Start() {
+        if (PlayerPrefs.HasKey("LoaderInversion"))
+            invertTimeline = PlayerPrefs.GetInt("LoaderInversion") != 0;
+
         if (CharacterConfigurationLoader.getConfigFileNameFromPlayerPrefs && PlayerPrefs.HasKey(CharacterConfigurationLoader.configFilePlayerPrefsString))
             configFile = PlayerPrefs.GetString(CharacterConfigurationLoader.configFilePlayerPrefsString);
         else
@@ -51,6 +57,9 @@ public class BoundaryManager : MonoBehaviour {
         }
 
         ini.Close();
+
+        if (invertTimeline)
+            Array.Reverse(boundaryColors);
 
         float endTime = delays[delays.Length - 1] + transitionDuration / 2 + 1;
         int numPoints = (int)Mathf.Ceil(endTime / profileInterval);

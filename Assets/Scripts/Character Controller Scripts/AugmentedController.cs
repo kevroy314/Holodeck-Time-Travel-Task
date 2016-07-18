@@ -40,7 +40,11 @@ public class AugmentedController : MonoBehaviour {
         // Move forward
         float vertical = Input.GetAxis("Vertical");
         if (vertical > minAxisTilt)
-            character.Move(transform.forward * vertical * forwardSpeed * Time.deltaTime);
+        {
+            Vector3 moveDirection = transform.forward * vertical * forwardSpeed * Time.deltaTime;
+            moveDirection.y -= 9.81f * Time.deltaTime;
+            character.Move(moveDirection);
+        }
 
         // If 2D mode rotation, rotate
         if (rotationEnabled)
