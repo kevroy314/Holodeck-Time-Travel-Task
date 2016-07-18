@@ -67,7 +67,6 @@ public class AugmentedController : MonoBehaviour {
             bool changeOnRisingEdge = true;
             if ((changeOnRisingEdge && vrRotateState && !prevVRRotateState) || (!changeOnRisingEdge && vrRotateState))
             {
-                Handheld.Vibrate();
                 float rotationY = UnityEngine.VR.InputTracking.GetLocalRotation(UnityEngine.VR.VRNode.CenterEye).eulerAngles.y;
                 transform.rotation = Quaternion.Euler(new Vector3(0f, lookCamera.transform.rotation.eulerAngles.y, 0f));
             }

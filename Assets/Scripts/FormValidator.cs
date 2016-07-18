@@ -31,7 +31,7 @@ public class FormValidator : MonoBehaviour {
 
     private void SetPlayerPrefValues(int phase)
     {
-        PlayerPrefs.SetString("sub", subIDText.text);
+        PlayerPrefs.SetString("sub", subIDText.text.Trim());
         PlayerPrefs.SetInt("trial", trialDropDown.value);
         PlayerPrefs.SetInt("phase", phase);
         PlayerPrefs.SetInt("inv", inversionToggle.isOn ? 1 : 0);
