@@ -14,6 +14,9 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+# Data Files
+*.dat
+
 # Windows shortcuts
 *.lnk
 
