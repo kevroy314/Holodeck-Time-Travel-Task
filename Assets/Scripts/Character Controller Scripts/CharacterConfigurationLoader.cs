@@ -5,6 +5,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 public class CharacterConfigurationLoader : MonoBehaviour {
 
     public BinaryLogger binaryLogger;
+    public MouseOcculusion mouseOcculsion;
 
     public static string configFile = "simulation.config";
     public static bool getConfigFileNameFromPlayerPrefs = true;
@@ -184,6 +185,12 @@ public class CharacterConfigurationLoader : MonoBehaviour {
             bubble.keyboardInvisibilityBubbleButton = keyboardInvisibilityBubbleButton;
             bubble.controllerInvisibilityBubbleButton = controllerInvisibilityBubbleButton;
             bubble.distance = invisibilityDistance;
+        }
+
+        if (mouseOcculsion != null)
+        {
+            mouseOcculsion.keyboardInvisibilityBubbleButton = toggleInvisibilityButton;
+            mouseOcculsion.distance = invisibilityDistance;
         }
 
         ini.Close();

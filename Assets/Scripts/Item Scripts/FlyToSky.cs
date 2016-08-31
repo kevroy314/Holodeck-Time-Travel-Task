@@ -44,7 +44,7 @@ public class FlyToSky : ClickableObject
         goToEndHash.Add("easetype", iTween.EaseType.easeInBounce);
 
         clickStartTime = transitionDelay;
-        clickEndTime = transitionDelay + transitionDuration*2;
+        clickEndTime = transitionDelay + transitionDuration;
         localTime = time;
 
         render.enabled = true;

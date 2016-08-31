@@ -51,6 +51,9 @@ public class InventoryManager : MonoBehaviour
 
     private bool firstCall = true;
 
+    public bool placeWithMouse = false;
+    public float mousePlaceHeight = 5f;
+    public float forceTransparency = 1f;
     // Use this for initialization
     void Start()
     {
@@ -102,11 +105,17 @@ public class InventoryManager : MonoBehaviour
         //Find closest object not being held
         closestIndex = -1;
         closestDist = float.MaxValue;
+        Vector3 comparisonDistance = gameObject.transform.position;
+        if (placeWithMouse)
+        {
+            Vector3 mouse = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
+            comparisonDistance = new Vector3(mouse.x, mousePlaceHeight*2, mouse.z);
+        }
         for (int i = 0; i < clickableObjects.Length; i++)
         {
             if (!objectHeldList.Contains(i))
             {
-                float dist = Vector3.Distance(gameObject.transform.position, clickableObjects[i].gameObject.transform.position);
+                float dist = Vector3.Distance(comparisonDistance, clickableObjects[i].gameObject.transform.position);
                 if (dist < closestDist)
                 {
                     closestIndex = i;
@@ -116,6 +125,9 @@ public class InventoryManager : MonoBehaviour
         }
 
         bool inputState = Input.GetKey(placeKeyCode) || Input.GetButton(placeButtonString);
+        bool mouseButtonState = Input.GetMouseButtonDown(0);
+        if (placeWithMouse)
+            inputState = mouseButtonState;
         if (inputState && !previousInputState)
         {
             //If there are objects available to potentially pick up AND the closest object is visible AND the object is within the place distance AND the object is clickable
@@ -142,16 +154,21 @@ public class InventoryManager : MonoBehaviour
                     int prevItemNum = int.Parse(clickableObjects[index].gameObject.transform.parent.gameObject.name.Substring(4));
                     Debug.Log(prevItemNum);
                     GameObject obj;
+                    Vector3 placePosition = transform.position + (transform.forward * placeDistance);
+                    if (placeWithMouse)
+                    {
+                        Vector3 mouse = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
+                        placePosition = new Vector3(mouse.x, mousePlaceHeight, mouse.z);
+                    }
                     if (currentItemTypeIndex == 2)
-                        obj = ItemGenerator.GenerateFall(fallPrefabItem, prevParent, transform.position + (transform.forward * placeDistance), prevTexture, prevClickTexture, time.time, time, prevItemNum);
+                        obj = ItemGenerator.GenerateFall(fallPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum);
                     else if (currentItemTypeIndex == 1)
-                        obj = ItemGenerator.GenerateFly(flyPrefabItem, prevParent, transform.position + (transform.forward * placeDistance), prevTexture, prevClickTexture, time.time, time, prevItemNum);
+                        obj = ItemGenerator.GenerateFly(flyPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum);
                     else
-                        obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, transform.position + (transform.forward * placeDistance), prevTexture, prevClickTexture, time, prevItemNum);
+                        obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time, prevItemNum);
                     GameObject oldObj = clickableObjects[index].gameObject.transform.parent.gameObject;
                     clickableObjects[index] = obj.GetComponentInChildren<ClickableObject>();
                     DestroyImmediate(oldObj);
-
                     audioSrc.pitch = 1f;
                     audioSrc.clip = soundEffect;
                     audioSrc.Play();
@@ -171,6 +188,19 @@ public class InventoryManager : MonoBehaviour
             displayImage.material = clickableObjects[objectHeldList.First.Value].gameObject.GetComponent<MeshRenderer>().material;
         else
             displayImage.material = emptyMaterial;
+
+        if (forceTransparency != 1f)
+        {
+            Material m = displayImage.material;
+            m.SetFloat("_Mode", 2);
+            m.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            m.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            m.SetInt("_ZWrite", 0);
+            m.DisableKeyword("_ALPHATEST_ON");
+            m.EnableKeyword("_ALPHABLEND_ON");
+            m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            m.renderQueue = 3000;
+        }
 
         bool pickUpAllInputState = Input.GetKey(pickUpAllCode) || Input.GetButton(pickUpAllButtonString);
         if (pickUpAllInputState && !previousPickUpAllInputState)

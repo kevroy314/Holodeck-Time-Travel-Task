@@ -44,7 +44,7 @@ public class FallFromSky : ClickableObject
         goToEndHash.Add("easetype", iTween.EaseType.easeOutBounce);
 
         clickStartTime = transitionDelay;
-        clickEndTime = transitionDelay + transitionDuration*2;
+        clickEndTime = transitionDelay + transitionDuration;
         localTime = time;
 
         render.enabled = false;

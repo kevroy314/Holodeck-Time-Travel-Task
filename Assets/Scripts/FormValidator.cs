@@ -12,7 +12,14 @@ public class FormValidator : MonoBehaviour {
     public Button studyButton;
     public Button testButton;
     public Toggle inversionToggle;
-	
+    public Toggle twoDAndMouseOnly;
+
+    void Start()
+    {
+        foreach (Camera c in Camera.allCameras)
+            c.ResetAspect();
+    }
+
 	// Update is called once per frame
 	void Update () {
 	    if(subIDText.text.Length == 3 && trialDropDown.value != 0)
@@ -40,24 +47,32 @@ public class FormValidator : MonoBehaviour {
     public void BeginPractice()
     {
         VRSettings.enabled = true;
-        PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practice.config");
-        SetPlayerPrefValues(0);
-        SceneManager.LoadScene(1);
+        PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practice" + (twoDAndMouseOnly.isOn ? "2d" : "") + ".config");
+        SetPlayerPrefValues(twoDAndMouseOnly.isOn ? 3 : 0);
+        if (twoDAndMouseOnly.isOn)
+        {
+            VRSettings.enabled = false;
+            foreach (Camera c in Camera.allCameras)
+                c.aspect = 1f;
+        }
+        SceneManager.LoadScene(twoDAndMouseOnly.isOn ? 3 : 1);
     }
 
     public void BeginStudy()
     {
         VRSettings.enabled = true;
-        PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "study.config");
-        SetPlayerPrefValues(1);
-        SceneManager.LoadScene(1);
+        PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "study" + (twoDAndMouseOnly.isOn ? "2d" : "") + ".config");
+        SetPlayerPrefValues(twoDAndMouseOnly.isOn ? 4 : 1);
+        if (twoDAndMouseOnly.isOn) VRSettings.enabled = false;
+        SceneManager.LoadScene(twoDAndMouseOnly.isOn ? 3 : 1);
     }
 
     public void BeginTest()
     {
         VRSettings.enabled = true;
-        PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "test.config");
-        SetPlayerPrefValues(2);
-        SceneManager.LoadScene(2);
+        PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "test" + (twoDAndMouseOnly.isOn ? "2d" : "") + ".config");
+        SetPlayerPrefValues(twoDAndMouseOnly.isOn ? 5 : 2);
+        if (twoDAndMouseOnly.isOn) VRSettings.enabled = false;
+        SceneManager.LoadScene(twoDAndMouseOnly.isOn ? 4 : 2);
     }
 }

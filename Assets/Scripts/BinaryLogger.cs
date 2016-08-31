@@ -28,6 +28,8 @@ public class BinaryLogger : MonoBehaviour {
 
     private int expectedNumItems;
 
+    public bool followMousePosition = false;
+
 	// Use this for initialization
 	void Start () {
         string filename = filenameFormat;
@@ -85,13 +87,27 @@ public class BinaryLogger : MonoBehaviour {
         writer.Write(DateTime.Now.ToBinary());
         writer.Write(time.time);
         writer.Write(time.timeScale);
-        writer.Write(cam.transform.position.x);
-        writer.Write(cam.transform.position.y);
-        writer.Write(cam.transform.position.z);
-        writer.Write(cam.transform.rotation.x);
-        writer.Write(cam.transform.rotation.y);
-        writer.Write(cam.transform.rotation.z);
-        writer.Write(cam.transform.rotation.w);
+        if (followMousePosition)
+        {
+            Vector3 mouse = cam.ScreenToWorldPoint(Input.mousePosition);
+            writer.Write(mouse.x);
+            writer.Write(mouse.y);
+            writer.Write(mouse.z);
+            writer.Write(Input.GetMouseButton(0) ? 1f : 0f);
+            writer.Write(Input.GetMouseButton(1) ? 1f : 0f);
+            writer.Write(Input.GetMouseButton(2) ? 1f : 0f);
+            writer.Write(0f);
+        }
+        else
+        {
+            writer.Write(cam.transform.position.x);
+            writer.Write(cam.transform.position.y);
+            writer.Write(cam.transform.position.z);
+            writer.Write(cam.transform.rotation.x);
+            writer.Write(cam.transform.rotation.y);
+            writer.Write(cam.transform.rotation.z);
+            writer.Write(cam.transform.rotation.w);
+        }
         for(int i = 0; i < keys.Count; i++)
             writer.Write(Input.GetKey(keys[i]));
         for (int i = 0; i < buttons.Count; i++)
