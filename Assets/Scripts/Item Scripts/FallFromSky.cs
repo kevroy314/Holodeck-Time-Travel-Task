@@ -29,6 +29,7 @@ public class FallFromSky : ClickableObject
         //time = GetComponent<Timeline>();
 
         audioSrc = transform.parent.gameObject.GetComponent<AudioSource>();
+        audioSrc.volume = volume;
 
         transform.localPosition = startPos;
 
