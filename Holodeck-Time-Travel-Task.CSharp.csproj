@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Camera2DAdjuster.cs" />
+    <Compile Include="Assets\FollowMouse.cs" />
     <Compile Include="Assets\ForceAspectRatio.cs" />
     <Compile Include="Assets\Item2DAdjuster.cs" />
     <Compile Include="Assets\MouseClickManager.cs" />
