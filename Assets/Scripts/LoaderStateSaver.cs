@@ -7,22 +7,22 @@ public class LoaderStateSaver : MonoBehaviour {
     public bool saveSubjectID = true;
     public bool saveTrialNum = false;
     public bool saveInversion = true;
-    public bool saveTwoD = true;
+    public bool saveMode = true;
 
     public InputField subIDInputField;
     public Dropdown trialDropDown;
     public Toggle inversionToggle;
-    public Toggle twoDToggle;
+    public Dropdown modeDropdown;
 
     public string subIDStateString = "LoaderSubID";
     public string trialNumStateString = "LoaderTrialNum";
     public string inversionStateString = "LoaderInversion";
-    public string twoDStateString = "LoaderTwoD";
+    public string modeStateString = "LoaderMode";
 
     private string prevSubIDVal;
     private int prevTrialNumVal;
     private bool prevInversionVal;
-    private bool prevTwoDVal;
+    private int prevModeVal;
 
     // Use this for initialization
     void Start () {
@@ -50,13 +50,13 @@ public class LoaderStateSaver : MonoBehaviour {
                 PlayerPrefs.SetInt(inversionStateString, inversionToggle.isOn?1:0);
             prevInversionVal = inversionToggle.isOn;
         }
-        if (saveTwoD)
+        if (saveMode)
         {
-            if (PlayerPrefs.HasKey(twoDStateString))
-                twoDToggle.isOn = PlayerPrefs.GetInt(twoDStateString) != 0;
+            if (PlayerPrefs.HasKey(modeStateString))
+                modeDropdown.value = PlayerPrefs.GetInt(modeStateString);
             else
-                PlayerPrefs.SetInt(twoDStateString, twoDToggle.isOn ? 1 : 0);
-            prevTwoDVal = twoDToggle.isOn;
+                PlayerPrefs.SetInt(modeStateString, modeDropdown.value);
+            prevModeVal = modeDropdown.value;
         }
 	}
 	
@@ -77,10 +77,10 @@ public class LoaderStateSaver : MonoBehaviour {
             PlayerPrefs.SetInt(inversionStateString, inversionToggle.isOn?1:0);
             prevInversionVal = inversionToggle.isOn;
         }
-        if (saveTwoD && twoDToggle.isOn != prevTwoDVal)
+        if (saveMode && modeDropdown.value != prevModeVal)
         {
-            PlayerPrefs.SetInt(twoDStateString, twoDToggle.isOn ? 1 : 0);
-            prevTwoDVal = twoDToggle.isOn;
+            PlayerPrefs.SetInt(modeStateString, modeDropdown.value);
+            prevModeVal = modeDropdown.value;
         }
     }
 }

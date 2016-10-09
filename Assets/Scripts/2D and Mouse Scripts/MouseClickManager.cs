@@ -45,7 +45,7 @@ public class MouseClickManager : MonoBehaviour
         {
             if (Physics.Raycast(Camera.allCameras[0].ScreenPointToRay(Input.mousePosition), out hit))
             {
-                if (children.Contains(hit.collider.gameObject.transform))
+                if (children.Contains(hit.collider.gameObject.transform.parent))
                 {
                     ClickableObject clickableObj = hit.collider.gameObject.GetComponentInChildren<ClickableObject>();
                     if (clickableObj.clickable)

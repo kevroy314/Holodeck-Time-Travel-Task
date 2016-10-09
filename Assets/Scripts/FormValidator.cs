@@ -12,7 +12,7 @@ public class FormValidator : MonoBehaviour {
     public Button studyButton;
     public Button testButton;
     public Toggle inversionToggle;
-    public Toggle twoDAndMouseOnly;
+    public Dropdown mode;
 
     void Start()
     {
@@ -46,33 +46,94 @@ public class FormValidator : MonoBehaviour {
 
     public void BeginPractice()
     {
-        VRSettings.enabled = true;
-        PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practice" + (twoDAndMouseOnly.isOn ? "2d" : "") + ".config");
-        SetPlayerPrefValues(twoDAndMouseOnly.isOn ? 3 : 0);
-        if (twoDAndMouseOnly.isOn)
+        int phase = -1;
+        switch (mode.value)
         {
-            VRSettings.enabled = false;
-            foreach (Camera c in Camera.allCameras)
-                c.aspect = 1f;
+            case 0:
+                phase = 0;
+                VRSettings.enabled = true;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practice.config");
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(1);
+                break;
+            case 1:
+                phase = 3;
+                VRSettings.enabled = false;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practiceVE.config");
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(1);
+                break;
+            case 2:
+                phase = 6;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practice2d.config");
+                VRSettings.enabled = false;
+                foreach (Camera c in Camera.allCameras)
+                    c.aspect = 1f;
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(3);
+                break;
         }
-        SceneManager.LoadScene(twoDAndMouseOnly.isOn ? 3 : 1);
     }
 
     public void BeginStudy()
     {
-        VRSettings.enabled = true;
-        PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "study" + (twoDAndMouseOnly.isOn ? "2d" : "") + ".config");
-        SetPlayerPrefValues(twoDAndMouseOnly.isOn ? 4 : 1);
-        if (twoDAndMouseOnly.isOn) VRSettings.enabled = false;
-        SceneManager.LoadScene(twoDAndMouseOnly.isOn ? 3 : 1);
+        int phase = -1;
+        switch (mode.value)
+        {
+            case 0:
+                phase = 1;
+                VRSettings.enabled = true;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "study.config");
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(1);
+                break;
+            case 1:
+                phase = 4;
+                VRSettings.enabled = false;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "studyVE.config");
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(1);
+                break;
+            case 2:
+                phase = 7;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "study2d.config");
+                VRSettings.enabled = false;
+                foreach (Camera c in Camera.allCameras)
+                    c.aspect = 1f;
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(3);
+                break;
+        }
     }
 
     public void BeginTest()
     {
-        VRSettings.enabled = true;
-        PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "test" + (twoDAndMouseOnly.isOn ? "2d" : "") + ".config");
-        SetPlayerPrefValues(twoDAndMouseOnly.isOn ? 5 : 2);
-        if (twoDAndMouseOnly.isOn) VRSettings.enabled = false;
-        SceneManager.LoadScene(twoDAndMouseOnly.isOn ? 4 : 2);
+        int phase = -1;
+        switch (mode.value)
+        {
+            case 0:
+                phase = 2;
+                VRSettings.enabled = true;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "test.config");
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(2);
+                break;
+            case 1:
+                phase = 5;
+                VRSettings.enabled = false;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "testVE.config");
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(2);
+                break;
+            case 2:
+                phase = 8;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "test2d.config");
+                VRSettings.enabled = false;
+                foreach (Camera c in Camera.allCameras)
+                    c.aspect = 1f;
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(4);
+                break;
+        }
     }
 }

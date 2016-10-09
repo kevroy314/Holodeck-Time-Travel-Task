@@ -19,6 +19,7 @@ public class BinaryLogger : MonoBehaviour {
     public List<string> buttons;
 
     public ItemGenerator generator;
+    public InventoryManager manager;
     private ClickableObject[] items;
     public BoundaryManager boundaries;
 
@@ -54,6 +55,8 @@ public class BinaryLogger : MonoBehaviour {
         filename = filename.Replace("<datetime>", timeString);
         Stream stream = new StreamWriter(filename).BaseStream;
         writer = new BinaryWriter(stream);
+
+        if (PlayerPrefs.GetInt("phase") >= 6) followMousePosition = true;
 	}
 	
 	// Update is called once per frame
@@ -62,14 +65,18 @@ public class BinaryLogger : MonoBehaviour {
         if (firstUpdate)
         {
             expectedNumItems = generator.expectedNumItems;
-            header = "time,f,timeScale,f,posXYZ,fff,rotXYZW,ffff,";
+            header = "version,2,time,f,timeScale,f,posXYZ,fff,rotXYZW,ffff,";
             for (int i = 0; i < keys.Count; i++)
-                header += "key" + i + ",b,";
+                header += "key" + keys[i].ToString() + "_" + i.ToString().PadLeft(2, '0') + ",b,";
             for (int i = 0; i < buttons.Count; i++)
-                header += "button" + i + ",b,";
+                header += "button" + buttons[i].ToString() + "_" + i.ToString().PadLeft(2, '0') + ",b,";
             for (int i = 0; i < items.Length; i++)
-                header += "itemXYZAC" + i + ",fffbb,";
-            header += "boundaryNum,i,boundaryColor,fff";
+                header += "itemXYZActiveClickedEventTime" + i.ToString().PadLeft(2, '0') + ",fffbbif,";
+            header += "boundaryNum,i,boundaryColor,fff,";
+            header += "inventoryItemNumbers,";
+            for (int i = 0; i < items.Length; i++)
+                header += "i";
+            header += ",activeInventoryItemNumber,i,activeInventoryEventIndex,i";
 
             if (header.Length > headerLength)
             {
@@ -118,11 +125,13 @@ public class BinaryLogger : MonoBehaviour {
         }
         for (int i = 0; i < expectedNumItems; i++)
         {
-            float _x = 0;
-            float _y = 0;
-            float _z = 0;
+            float _x = float.MinValue;
+            float _y = float.MinValue;
+            float _z = float.MinValue;
             bool _activeSelf = false;
             bool _hasBeenClicked = false;
+            int _eventType = -1;
+            float _eventTime = float.MinValue;
             try
             {
                 _x = items[i].transform.position.x;
@@ -130,6 +139,21 @@ public class BinaryLogger : MonoBehaviour {
                 _z = items[i].transform.position.z;
                 _activeSelf = items[i].gameObject.transform.parent.gameObject.activeSelf;
                 _hasBeenClicked = items[i].HasBeenClicked();
+                if (items[i].gameObject.GetComponent<Foil>() != null)
+                {
+                    _eventType = 0;
+                    _eventTime = 0f;
+                }
+                else if (items[i].gameObject.GetComponent<FlyToSky>() != null)
+                {
+                    _eventType = 1;
+                    _eventTime = items[i].gameObject.GetComponent<FlyToSky>().transitionDelay;
+                }
+                else if (items[i].gameObject.GetComponent<FallFromSky>() != null)
+                {
+                    _eventType = 2;
+                    _eventTime = items[i].gameObject.GetComponent<FallFromSky>().transitionDelay;
+                }
             }
             catch (Exception) { };
             writer.Write(_x);
@@ -137,17 +161,30 @@ public class BinaryLogger : MonoBehaviour {
             writer.Write(_z);
             writer.Write(_activeSelf);
             writer.Write(_hasBeenClicked);
+            writer.Write(_eventType);
+            writer.Write(_eventTime);
         }
         writer.Write(boundaries.getCurrentState());
         Color c = boundaries.getCurrentColor();
         writer.Write(c.r);
         writer.Write(c.g);
         writer.Write(c.b);
-    }
 
-    public void SwapItem(int index, ClickableObject newItem)
-    {
-        items[index] = newItem;
+        int[] _inventoryItemNumbers = new int[expectedNumItems];
+        for (int i = 0; i < _inventoryItemNumbers.Length; i++)
+            _inventoryItemNumbers[i] = -1;
+        int _activeInventoryItemNumber = -1;
+        int _activeInventoryEventIndex = -1;
+        if(manager != null)
+        {
+            _inventoryItemNumbers = manager.InventoryState;
+            _activeInventoryItemNumber = manager.ActiveInventoryItemNumber;
+            _activeInventoryEventIndex = manager.ActiveEventIndex;
+        }
+        for (int i = 0; i < _inventoryItemNumbers.Length; i++)
+            writer.Write(_inventoryItemNumbers[i]);
+        writer.Write(_activeInventoryItemNumber);
+        writer.Write(_activeInventoryEventIndex);
     }
 
     void OnApplicationQuit()

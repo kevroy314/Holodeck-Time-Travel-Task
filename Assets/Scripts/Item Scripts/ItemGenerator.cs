@@ -128,6 +128,8 @@ public class ItemGenerator : MonoBehaviour
         DisableAllCollidersInObject(tmp);
         tmp.transform.parent = parent;
         tmp.transform.localPosition = location;
+        tmp.GetComponentInChildren<BoxCollider>().enabled = true;
+        tmp.GetComponentInChildren<BoxCollider>().isTrigger = true;
         if (image != null)
         {
             tmp.GetComponentInChildren<MeshRenderer>().material.mainTexture = image;
@@ -153,6 +155,8 @@ public class ItemGenerator : MonoBehaviour
         DisableAllCollidersInObject(tmp);
         tmp.transform.parent = parent;
         tmp.transform.localPosition = location;
+        tmp.GetComponentInChildren<BoxCollider>().enabled = true;
+        tmp.GetComponentInChildren<BoxCollider>().isTrigger = true;
         if (image != null)
         {
             tmp.GetComponentInChildren<MeshRenderer>().material.mainTexture = image;
@@ -176,6 +180,8 @@ public class ItemGenerator : MonoBehaviour
         tmp.transform.GetChild(0).gameObject.layer = 5;
         tmp.transform.GetChild(1).gameObject.layer = 5;
         DisableAllCollidersInObject(tmp);
+        tmp.GetComponentInChildren<BoxCollider>().enabled = true;
+        tmp.GetComponentInChildren<BoxCollider>().isTrigger = true;
         if (image != null)
         {
             tmp.GetComponentInChildren<MeshRenderer>().material.mainTexture = image;
@@ -236,6 +242,6 @@ public class ItemGenerator : MonoBehaviour
                 objs.Add(c);
         }
         
-        return objs.OrderBy(o => o.name).ToArray();
+        return objs.OrderBy(o => o.transform.parent.gameObject.name).ToArray();
     }
 }

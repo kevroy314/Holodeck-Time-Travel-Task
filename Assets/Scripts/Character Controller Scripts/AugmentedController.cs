@@ -55,7 +55,6 @@ public class AugmentedController : MonoBehaviour {
             if (Mathf.Abs(offset) >= minMovementOffset)
             {
                 float newY = offset + rotBody;
-                Debug.Log(newY);
                 transform.Rotate(0f, offset, 0f);
                 lookCamera.transform.parent.rotation = transform.rotation;
                 //UnityEngine.VR.InputTracking.Recenter();

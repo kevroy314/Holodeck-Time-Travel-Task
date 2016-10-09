@@ -72,12 +72,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Camera2DAdjuster.cs" />
-    <Compile Include="Assets\FollowMouse.cs" />
-    <Compile Include="Assets\ForceAspectRatio.cs" />
-    <Compile Include="Assets\Item2DAdjuster.cs" />
-    <Compile Include="Assets\MouseClickManager.cs" />
-    <Compile Include="Assets\MouseOcculusion.cs" />
+    <Compile Include="Assets\Scripts\2D and Mouse Scripts\Camera2DAdjuster.cs" />
+    <Compile Include="Assets\Scripts\2D and Mouse Scripts\FollowMouse.cs" />
+    <Compile Include="Assets\Scripts\2D and Mouse Scripts\ForceAspectRatio.cs" />
+    <Compile Include="Assets\Scripts\2D and Mouse Scripts\Item2DAdjuster.cs" />
+    <Compile Include="Assets\Scripts\2D and Mouse Scripts\MouseClickManager.cs" />
+    <Compile Include="Assets\Scripts\2D and Mouse Scripts\MouseOcculusion.cs" />
     <Compile Include="Assets\Scripts\BinaryLogger.cs" />
     <Compile Include="Assets\Scripts\Character Controller Scripts\AugmentedController.cs" />
     <Compile Include="Assets\Scripts\Character Controller Scripts\BubbleRenderer.cs" />

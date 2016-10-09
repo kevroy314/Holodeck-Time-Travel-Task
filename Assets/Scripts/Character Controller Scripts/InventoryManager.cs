@@ -17,7 +17,9 @@ public class InventoryManager : MonoBehaviour
     public Image displayImage;
     public Material emptyMaterial;
     public Timeline time;
+    public float pickDistance = 4f;
     public float placeDistance = 3f;
+    public float minObjectPlaceDistance = 1f;
 
     public KeyCode placeKeyCode = KeyCode.Space;
     public string placeButtonString = "a";
@@ -43,9 +45,6 @@ public class InventoryManager : MonoBehaviour
     private ClickableObject[] clickableObjects;
     private LinkedList<int> objectHeldList;
 
-    public int closestIndex = -1;
-    public float closestDist = float.MaxValue;
-
     private int currentInventoryIndex = 0;
     private int currentItemTypeIndex = 0;
 
@@ -54,6 +53,9 @@ public class InventoryManager : MonoBehaviour
     public bool placeWithMouse = false;
     public float mousePlaceHeight = 5f;
     public float forceTransparency = 1f;
+
+    public Camera targetingCamera;
+
     // Use this for initialization
     void Start()
     {
@@ -79,6 +81,37 @@ public class InventoryManager : MonoBehaviour
         return newList;
     }
 
+    public int[] InventoryState
+    {
+        get
+        {
+            int[] state = new int[clickableObjects.Length]; //Make state array
+            for (int i = 0; i < state.Length; i++) //Fill will -1 by default
+                state[i] = -1;
+            objectHeldList.CopyTo(state, 0); //Copy inventory index list
+            for (int i = 0; i < state.Length; i++) //Iterate through inventory index list and replace with item number
+                if (state[i] != -1)
+                    state[i] = int.Parse(clickableObjects[state[i]].transform.parent.gameObject.name.Substring(4, 2));
+            return state;
+        }
+    }
+
+    public int ActiveInventoryItemNumber
+    {
+        get
+        {
+            return int.Parse(clickableObjects[objectHeldList.First.Value].transform.parent.gameObject.name.Substring(4, 2)); 
+        }
+    }
+
+    public int ActiveEventIndex
+    {
+        get
+        {
+            return currentItemTypeIndex;
+        }
+    }
+
     void Update()
     {
         if (firstCall)
@@ -102,27 +135,13 @@ public class InventoryManager : MonoBehaviour
                 objectHeldList.AddFirst(i);
             firstCall = false;
         }
-        //Find closest object not being held
-        closestIndex = -1;
-        closestDist = float.MaxValue;
         Vector3 comparisonDistance = gameObject.transform.position;
         if (placeWithMouse)
         {
             Vector3 mouse = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
             comparisonDistance = new Vector3(mouse.x, mousePlaceHeight*2, mouse.z);
         }
-        for (int i = 0; i < clickableObjects.Length; i++)
-        {
-            if (!objectHeldList.Contains(i))
-            {
-                float dist = Vector3.Distance(comparisonDistance, clickableObjects[i].gameObject.transform.position);
-                if (dist < closestDist)
-                {
-                    closestIndex = i;
-                    closestDist = dist;
-                }
-            }
-        }
+
 
         bool inputState = Input.GetKey(placeKeyCode) || Input.GetButton(placeButtonString);
         bool mouseButtonState = Input.GetMouseButtonDown(0);
@@ -130,48 +149,99 @@ public class InventoryManager : MonoBehaviour
             inputState = mouseButtonState;
         if (inputState && !previousInputState)
         {
-            //If there are objects available to potentially pick up AND the closest object is visible AND the object is within the place distance AND the object is clickable
-            if (closestIndex != -1 && clickableObjects[closestIndex].gameObject.GetComponent<MeshRenderer>().isVisible && closestDist <= placeDistance) //And it is visible, within the min distance, and clickable
+            RaycastHit hit;
+            var cameraCenter = targetingCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height / 2f, targetingCamera.nearClipPlane));
+            if(placeWithMouse)
+                cameraCenter = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
+            Physics.SphereCast(cameraCenter, 0.5f, targetingCamera.transform.forward, out hit, 1000f, 1 << LayerMask.NameToLayer("UI"));
+            int hitIndex = -1;
+            if (hit.transform != null)
             {
-                clickableObjects[closestIndex].gameObject.transform.parent.gameObject.SetActive(false);
-                objectHeldList.AddFirst(closestIndex);
-
+                GameObject hitObj = hit.transform.gameObject;
+                Debug.Log("Hit: " + hitObj.name);
+                for (int i = 0; i < clickableObjects.Length; i++)
+                    if (hitObj == clickableObjects[i].gameObject)
+                        hitIndex = i;
+            }
+            if (hitIndex >= 0) //And it is visible, within the min distance, and clickable
+            {
+                clickableObjects[hitIndex].gameObject.transform.parent.gameObject.SetActive(false);
+                objectHeldList.AddFirst(hitIndex);
+                // Log item number, event type, location, time, 
+                //itemLogger.logMessage("Item Picked Up : " + clickableObjects[closestIndex].gameObject.transform.parent.name + " type ");
+                Debug.Log(hitIndex);
                 audioSrc.pitch = 1f;
                 audioSrc.clip = soundEffect;
                 audioSrc.Play();
             }
             else //No object is being picked up, drop the current item
             {
+                Debug.Log("No Hit, Placing.");
                 if (objectHeldList.Count > 0)
                 {
                     int index = objectHeldList.First.Value;
-                    objectHeldList.RemoveFirst();
                     Texture2D prevTexture = clickableObjects[index].mainTexture;
                     Texture2D prevClickTexture = clickableObjects[index].clickTexture;
                     Transform prevParent = clickableObjects[index].gameObject.transform.parent.transform.parent;
                     FallFromSky fallScript = clickableObjects[index].gameObject.GetComponent<FallFromSky>();
                     FlyToSky flyScript = clickableObjects[index].gameObject.GetComponent<FlyToSky>();
                     int prevItemNum = int.Parse(clickableObjects[index].gameObject.transform.parent.gameObject.name.Substring(4));
-                    Debug.Log(prevItemNum);
                     GameObject obj;
                     Vector3 placePosition = transform.position + (transform.forward * placeDistance);
-                    if (placeWithMouse)
-                    {
-                        Vector3 mouse = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
-                        placePosition = new Vector3(mouse.x, mousePlaceHeight, mouse.z);
+                    bool validPlacement = true;
+                    for(int i = 0; i < clickableObjects.Length; i++) {
+                        if (i == index) continue;
+                        float dist = Vector3.Distance(placePosition, clickableObjects[i].transform.parent.position);
+                        //If object is enabled and visible and within the minPlaceDistance, invalidate the placement
+                        if (clickableObjects[i].isActiveAndEnabled && clickableObjects[i].GetComponent<MeshRenderer>().isVisible && dist < minObjectPlaceDistance)
+                            validPlacement = false; //Invalid object placement, do nothing
+                        if (placePosition == clickableObjects[i].transform.parent.position) //As an additional check, if the objects are in precisely the same place, invalidate as well
+                            validPlacement = false;
                     }
-                    if (currentItemTypeIndex == 2)
-                        obj = ItemGenerator.GenerateFall(fallPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum);
-                    else if (currentItemTypeIndex == 1)
-                        obj = ItemGenerator.GenerateFly(flyPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum);
+                     if(time.time > 59.99 && currentItemTypeIndex != 0)
+                    {
+                        Debug.Log("Invalidated Placement Due To Event Type and Time");
+                        validPlacement = false;
+                    }
+                    if (validPlacement)
+                    {
+                        Debug.Log("Valid Placement");
+                        Debug.Log(prevItemNum);
+                        objectHeldList.RemoveFirst();
+                        // Check boundary conditions
+                        Vector3 originalPlacement = placePosition;
+                        if (placePosition.x < -18.5f)
+                            placePosition = new Vector3(-18.5f, placePosition.y, placePosition.z);
+                        else if (placePosition.x > 18.5f)
+                            placePosition = new Vector3(18.5f, placePosition.y, placePosition.z);
+                        if (placePosition.z < -18.5f)
+                            placePosition = new Vector3(placePosition.x, placePosition.y, -18.5f);
+                        else if (placePosition.z > 18.5f)
+                            placePosition = new Vector3(placePosition.x, placePosition.y, 18.5f);
+                        if (originalPlacement != placePosition)
+                            Debug.Log("Placed within wall, placement has been shifted.");
+                        if (placeWithMouse)
+                        {
+                            Vector3 mouse = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
+                            placePosition = new Vector3(mouse.x, mousePlaceHeight, mouse.z);
+                        }
+                        if (currentItemTypeIndex == 2)
+                            obj = ItemGenerator.GenerateFall(fallPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum);
+                        else if (currentItemTypeIndex == 1)
+                            obj = ItemGenerator.GenerateFly(flyPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum);
+                        else
+                            obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time, prevItemNum);
+                        GameObject oldObj = clickableObjects[index].gameObject.transform.parent.gameObject;
+                        clickableObjects[index] = obj.GetComponentInChildren<ClickableObject>();
+                        DestroyImmediate(oldObj);
+                        audioSrc.pitch = 1f;
+                        audioSrc.clip = soundEffect;
+                        audioSrc.Play();
+                    }
                     else
-                        obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time, prevItemNum);
-                    GameObject oldObj = clickableObjects[index].gameObject.transform.parent.gameObject;
-                    clickableObjects[index] = obj.GetComponentInChildren<ClickableObject>();
-                    DestroyImmediate(oldObj);
-                    audioSrc.pitch = 1f;
-                    audioSrc.clip = soundEffect;
-                    audioSrc.Play();
+                    {
+                        Debug.Log("No valid placement.");
+                    }
                 }
             }
         }
