@@ -48,8 +48,6 @@ public class ItemGenerator : MonoBehaviour
         if (PlayerPrefs.HasKey("LoaderInversion"))
             invertTimeline = PlayerPrefs.GetInt("LoaderInversion") != 0;
 
-        bool[] mustBeClickeds = new bool[numItems];
-        float[] soundVolumes = new float[numItems];
         Vector3[] locations = new Vector3[numItems];
         float[] delays = new float[numItems];
         ItemTypes[] types = new ItemTypes[numItems];
@@ -57,10 +55,6 @@ public class ItemGenerator : MonoBehaviour
         Texture2D[] clickImages = new Texture2D[numItems];
         for (int i = 0; i < numItems; i++)
         {
-            bool mustBeClicked = ini.ReadValue("Items", itemKey + i + "MustBeClicked", 1) == 0 ? false : true;
-            mustBeClickeds[i] = mustBeClicked;
-            float soundVolume = (float)ini.ReadValue("Items", itemKey + i + "Volume", 1.0);
-            soundVolumes[i] = soundVolume;
             float x = (float)ini.ReadValue("Items", itemKey + i + "X", 0.0);
             float z = (float)ini.ReadValue("Items", itemKey + i + "Z", 0.0);
             locations[i] = new Vector3(x, y, z);
@@ -115,16 +109,12 @@ public class ItemGenerator : MonoBehaviour
 
         for (int i = 0; i < locations.Length; i++)
         {
-            GameObject obj = null;
             if (types[i] == ItemTypes.Fall)
-                obj = GenerateFall(fallPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i);
+                GenerateFall(fallPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i);
             else if (types[i] == ItemTypes.Fly)
-                obj = GenerateFly(flyPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i);
+                GenerateFly(flyPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i);
             else if (types[i] == ItemTypes.Foil)
-                obj = GenerateFoil(foilPrefabItem, transform, locations[i], images[i], clickImages[i], time, i);
-            if (obj != null && !mustBeClickeds[i])
-                obj.GetComponentInChildren<ClickableObject>().DisableClick = true;
-            obj.GetComponentInChildren<ClickableObject>().volume = soundVolumes[i];
+                GenerateFoil(foilPrefabItem, transform, locations[i], images[i], clickImages[i], time, i);
         }
     }
 

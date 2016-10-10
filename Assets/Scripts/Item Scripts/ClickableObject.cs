@@ -4,7 +4,7 @@ using Chronos;
 
 public class ClickableObject : MonoBehaviour
 {
-    public float volume = 1f;
+
     public float clickStartTime = 0f;
     public float clickEndTime = 1f;
     public bool clickable = false;
@@ -18,7 +18,7 @@ public class ClickableObject : MonoBehaviour
     private AudioSource soundEffect;
     public Texture2D clickTexture;
     public Texture2D mainTexture;
-    public bool disableClick = false;
+
     // Use this for initialization
     public void StartI()
     {
@@ -31,8 +31,6 @@ public class ClickableObject : MonoBehaviour
         pulseHash.Add("eastype", iTween.EaseType.easeInSine);
         pulseHash.Add("looptype", iTween.LoopType.loop);
         soundEffect = targetObject.GetComponent<AudioSource>();
-        if (disableClick)
-            Click(false);
     }
 
     // Update is called once per frame
@@ -71,23 +69,16 @@ public class ClickableObject : MonoBehaviour
         previousClickable = clickable;
     }
 
-    public void Click(bool playSound = true)
+    public void Click()
     {
         if (!hasBeenClicked)
         {
             targetRender.enabled = false;
             halo.GetType().GetProperty("enabled").SetValue(halo, false, null);
             iTween.Stop(targetObject);
-            if (playSound)
-                soundEffect.PlayOneShot(soundEffect.clip);
+            soundEffect.PlayOneShot(soundEffect.clip);
             hasBeenClicked = true;
         }
-    }
-
-    public bool DisableClick
-    {
-        get { return disableClick; }
-        set { disableClick = value; }
     }
 
     public bool HasBeenClicked()

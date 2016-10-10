@@ -183,8 +183,8 @@ public class InventoryManager : MonoBehaviour
                     Texture2D prevTexture = clickableObjects[index].mainTexture;
                     Texture2D prevClickTexture = clickableObjects[index].clickTexture;
                     Transform prevParent = clickableObjects[index].gameObject.transform.parent.transform.parent;
-                    FallFromSky fallScript = clickableObjects[index].gameObject.transform.parent.gameObject.GetComponentInChildren<FallFromSky>();
-                    FlyToSky flyScript = clickableObjects[index].gameObject.transform.parent.gameObject.GetComponentInChildren<FlyToSky>();
+                    FallFromSky fallScript = clickableObjects[index].gameObject.GetComponent<FallFromSky>();
+                    FlyToSky flyScript = clickableObjects[index].gameObject.GetComponent<FlyToSky>();
                     int prevItemNum = int.Parse(clickableObjects[index].gameObject.transform.parent.gameObject.name.Substring(4));
                     GameObject obj;
                     Vector3 placePosition = transform.position + (transform.forward * placeDistance);
@@ -239,23 +239,9 @@ public class InventoryManager : MonoBehaviour
                         audioSrc.Play();
                     }
                     else
-<<<<<<< HEAD
                     {
                         Debug.Log("No valid placement.");
                     }
-=======
-                        obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time, prevItemNum);
-                    GameObject oldObj = clickableObjects[index].gameObject.transform.parent.gameObject;
-                    bool disableClick = clickableObjects[index].DisableClick;
-                    float volume = clickableObjects[index].volume;
-                    clickableObjects[index] = obj.GetComponentInChildren<ClickableObject>();
-                    clickableObjects[index].DisableClick = disableClick;
-                    clickableObjects[index].volume = volume;
-                    DestroyImmediate(oldObj);
-                    audioSrc.pitch = 1f;
-                    audioSrc.clip = soundEffect;
-                    audioSrc.Play();
->>>>>>> 9f54f7e304715e13661e7299f32a4cd7e3614afb
                 }
             }
         }
