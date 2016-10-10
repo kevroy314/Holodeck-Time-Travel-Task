@@ -45,7 +45,6 @@ public class InventoryManager : MonoBehaviour
     private ClickableObject[] clickableObjects;
     private LinkedList<int> objectHeldList;
 
-    private int currentInventoryIndex = 0;
     private int currentItemTypeIndex = 0;
 
     private bool firstCall = true;
@@ -100,7 +99,10 @@ public class InventoryManager : MonoBehaviour
     {
         get
         {
-            return int.Parse(clickableObjects[objectHeldList.First.Value].transform.parent.gameObject.name.Substring(4, 2)); 
+            if (objectHeldList.First != null)
+                return int.Parse(clickableObjects[objectHeldList.First.Value].transform.parent.gameObject.name.Substring(4, 2));
+            else
+                return -1;
         }
     }
 
@@ -163,7 +165,7 @@ public class InventoryManager : MonoBehaviour
                     if (hitObj == clickableObjects[i].gameObject)
                         hitIndex = i;
             }
-            if (hitIndex >= 0) //And it is visible, within the min distance, and clickable
+            if (hitIndex >= 0 && (!placeWithMouse || clickableObjects[hitIndex].gameObject.GetComponent<MeshRenderer>().isVisible)) //And it is visible, within the min distance, and clickable
             {
                 clickableObjects[hitIndex].gameObject.transform.parent.gameObject.SetActive(false);
                 objectHeldList.AddFirst(hitIndex);
