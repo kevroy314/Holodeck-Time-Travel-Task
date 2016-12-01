@@ -59,7 +59,8 @@ public class FallFromSky : ClickableObject
             iTween.MoveTo(gameObject, goToEndHash);
             audioSrc.timeSamples = 0;
             audioSrc.pitch = 1;
-            audioSrc.Play();
+            if (playSoundEffect)
+                audioSrc.Play();
             playedForward = true;
             playedBackward = false;
             render.enabled = true;
@@ -70,7 +71,8 @@ public class FallFromSky : ClickableObject
             audioSrc.Stop();
             audioSrc.timeSamples = audioSrc.clip.samples - 1;
             audioSrc.pitch = -1;
-            audioSrc.Play();
+            if (playSoundEffect)
+                audioSrc.Play();
             playedBackward = true;
             playedForward = false;
         }

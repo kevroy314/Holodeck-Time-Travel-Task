@@ -18,6 +18,7 @@ public class ClickableObject : MonoBehaviour
     private AudioSource soundEffect;
     public Texture2D clickTexture;
     public Texture2D mainTexture;
+    public bool playSoundEffect = true;
 
     // Use this for initialization
     public void StartI()

@@ -59,7 +59,8 @@ public class FlyToSky : ClickableObject
             iTween.MoveTo(gameObject, goToEndHash);
             audioSrc.timeSamples = 0;
             audioSrc.pitch = 1;
-            audioSrc.Play();
+            if (playSoundEffect)
+                audioSrc.Play();
             playedForward = true;
             playedBackward = false;
         }
@@ -77,7 +78,8 @@ public class FlyToSky : ClickableObject
             audioSrc.Stop();
             audioSrc.timeSamples = audioSrc.clip.samples - 1;
             audioSrc.pitch = -1;
-            audioSrc.Play();
+            if (playSoundEffect)
+                audioSrc.Play();
             playedBackward = true;
             playedForward = false;
         }

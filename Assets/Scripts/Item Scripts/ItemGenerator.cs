@@ -53,6 +53,7 @@ public class ItemGenerator : MonoBehaviour
         ItemTypes[] types = new ItemTypes[numItems];
         Texture2D[] images = new Texture2D[numItems];
         Texture2D[] clickImages = new Texture2D[numItems];
+        bool[] playSoundEffect = new bool[numItems];
         for (int i = 0; i < numItems; i++)
         {
             float x = (float)ini.ReadValue("Items", itemKey + i + "X", 0.0);
@@ -78,6 +79,7 @@ public class ItemGenerator : MonoBehaviour
             }
             string imageFilename = imgRootPath + ini.ReadValue("Items", itemKey + i + "Image", "error.png");
             string clickImageFilename = imgRootPath + ini.ReadValue("Items", itemKey + i + "ClickImage", "error.png");
+            playSoundEffect[i] = ini.ReadValue("Items", itemKey + i + "AudioEnabled", 1) != 0;
             byte[] fileData;
             if (File.Exists(imageFilename))
             {
@@ -110,15 +112,15 @@ public class ItemGenerator : MonoBehaviour
         for (int i = 0; i < locations.Length; i++)
         {
             if (types[i] == ItemTypes.Fall)
-                GenerateFall(fallPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i);
+                GenerateFall(fallPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i, playSoundEffect[i]);
             else if (types[i] == ItemTypes.Fly)
-                GenerateFly(flyPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i);
+                GenerateFly(flyPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i, playSoundEffect[i]);
             else if (types[i] == ItemTypes.Foil)
-                GenerateFoil(foilPrefabItem, transform, locations[i], images[i], clickImages[i], time, i);
+                GenerateFoil(foilPrefabItem, transform, locations[i], images[i], clickImages[i], time, i, playSoundEffect[i]);
         }
     }
 
-    public static GameObject GenerateFall(GameObject fallPrefabItem, Transform parent, Vector3 location, Texture2D image, Texture2D clickImage, float delay, Timeline time, int itemNum)
+    public static GameObject GenerateFall(GameObject fallPrefabItem, Transform parent, Vector3 location, Texture2D image, Texture2D clickImage, float delay, Timeline time, int itemNum, bool playSound)
     {
         GameObject tmp = Instantiate(fallPrefabItem);
         tmp.name = "Item" + itemNum.ToString().PadLeft(2, '0');
@@ -142,10 +144,11 @@ public class ItemGenerator : MonoBehaviour
         script.time = time;
         script.mainTexture = image;
         script.clickTexture = clickImage;
+        script.playSoundEffect = playSound;
         return tmp;
     }
 
-    public static GameObject GenerateFly(GameObject flyPrefabItem, Transform parent, Vector3 location, Texture2D image, Texture2D clickImage, float delay, Timeline time, int itemNum)
+    public static GameObject GenerateFly(GameObject flyPrefabItem, Transform parent, Vector3 location, Texture2D image, Texture2D clickImage, float delay, Timeline time, int itemNum, bool playSound)
     {
         GameObject tmp = Instantiate(flyPrefabItem);
         tmp.name = "Item" + itemNum.ToString().PadLeft(2, '0');
@@ -169,10 +172,11 @@ public class ItemGenerator : MonoBehaviour
         script.time = time;
         script.mainTexture = image;
         script.clickTexture = clickImage;
+        script.playSoundEffect = playSound;
         return tmp;
     }
 
-    public static GameObject GenerateFoil(GameObject foilPrefabItem, Transform parent, Vector3 location, Texture2D image, Texture2D clickImage, Timeline time, int itemNum)
+    public static GameObject GenerateFoil(GameObject foilPrefabItem, Transform parent, Vector3 location, Texture2D image, Texture2D clickImage, Timeline time, int itemNum, bool playSound)
     {
         GameObject tmp = Instantiate(foilPrefabItem);
         tmp.name = "Item" + itemNum.ToString().PadLeft(2, '0');
@@ -193,6 +197,7 @@ public class ItemGenerator : MonoBehaviour
         script.Time = time;
         script.mainTexture = image;
         script.clickTexture = clickImage;
+        script.playSoundEffect = playSound;
         return tmp;
     }
 

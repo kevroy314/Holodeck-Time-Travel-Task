@@ -184,6 +184,7 @@ public class InventoryManager : MonoBehaviour
                     int index = objectHeldList.First.Value;
                     Texture2D prevTexture = clickableObjects[index].mainTexture;
                     Texture2D prevClickTexture = clickableObjects[index].clickTexture;
+                    bool prevPlaySound = clickableObjects[index].playSoundEffect;
                     Transform prevParent = clickableObjects[index].gameObject.transform.parent.transform.parent;
                     FallFromSky fallScript = clickableObjects[index].gameObject.GetComponent<FallFromSky>();
                     FlyToSky flyScript = clickableObjects[index].gameObject.GetComponent<FlyToSky>();
@@ -228,11 +229,11 @@ public class InventoryManager : MonoBehaviour
                             placePosition = new Vector3(mouse.x, mousePlaceHeight, mouse.z);
                         }
                         if (currentItemTypeIndex == 2)
-                            obj = ItemGenerator.GenerateFall(fallPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum);
+                            obj = ItemGenerator.GenerateFall(fallPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum, prevPlaySound);
                         else if (currentItemTypeIndex == 1)
-                            obj = ItemGenerator.GenerateFly(flyPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum);
+                            obj = ItemGenerator.GenerateFly(flyPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum, prevPlaySound);
                         else
-                            obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time, prevItemNum);
+                            obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time, prevItemNum, prevPlaySound);
                         GameObject oldObj = clickableObjects[index].gameObject.transform.parent.gameObject;
                         clickableObjects[index] = obj.GetComponentInChildren<ClickableObject>();
                         DestroyImmediate(oldObj);
