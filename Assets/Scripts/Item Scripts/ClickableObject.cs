@@ -4,7 +4,9 @@ using Chronos;
 
 public class ClickableObject : MonoBehaviour
 {
-
+    public float soundEffectTimeDistanceThreshold = 2f;
+    public float transitionDelay = 10f;
+    public float transitionDuration = 1f;
     public float clickStartTime = 0f;
     public float clickEndTime = 1f;
     public bool clickable = false;
@@ -19,6 +21,7 @@ public class ClickableObject : MonoBehaviour
     public Texture2D clickTexture;
     public Texture2D mainTexture;
     public bool playSoundEffect = true;
+    public bool changeTexture = true;
 
     // Use this for initialization
     public void StartI()
@@ -41,14 +44,20 @@ public class ClickableObject : MonoBehaviour
         if (localTime.time > clickStartTime && localTime.time < clickEndTime)
         {
             clickable = true;
-            gameObject.GetComponent<MeshRenderer>().material.mainTexture = clickTexture;
-            ItemGenerator.flipTexture(gameObject);
+            if (changeTexture)
+            {
+                gameObject.GetComponent<MeshRenderer>().material.mainTexture = clickTexture;
+                ItemGenerator.flipTexture(gameObject);
+            }
         }
         else
         {
             clickable = false;
-            gameObject.GetComponent<MeshRenderer>().material.mainTexture = mainTexture;
-            ItemGenerator.flipTexture(gameObject);
+            if (changeTexture)
+            {
+                gameObject.GetComponent<MeshRenderer>().material.mainTexture = mainTexture;
+                ItemGenerator.flipTexture(gameObject);
+            }
         }
 
         if (hasBeenClicked)

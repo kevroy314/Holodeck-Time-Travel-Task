@@ -116,7 +116,7 @@ public class ItemGenerator : MonoBehaviour
             else if (types[i] == ItemTypes.Fly)
                 GenerateFly(flyPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i, playSoundEffect[i]);
             else if (types[i] == ItemTypes.Foil)
-                GenerateFoil(foilPrefabItem, transform, locations[i], images[i], clickImages[i], time, i, playSoundEffect[i]);
+                GenerateFoil(foilPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i, playSoundEffect[i]);
         }
     }
 
@@ -176,7 +176,7 @@ public class ItemGenerator : MonoBehaviour
         return tmp;
     }
 
-    public static GameObject GenerateFoil(GameObject foilPrefabItem, Transform parent, Vector3 location, Texture2D image, Texture2D clickImage, Timeline time, int itemNum, bool playSound)
+    public static GameObject GenerateFoil(GameObject foilPrefabItem, Transform parent, Vector3 location, Texture2D image, Texture2D clickImage, float delay, Timeline time, int itemNum, bool playSound)
     {
         GameObject tmp = Instantiate(foilPrefabItem);
         tmp.name = "Item" + itemNum.ToString().PadLeft(2, '0');
@@ -194,10 +194,42 @@ public class ItemGenerator : MonoBehaviour
         tmp.transform.parent = parent;
         tmp.transform.localPosition = location;
         Foil script = tmp.GetComponentInChildren<Foil>();
+        script.transitionDelay = delay;
+        script.transitionDuration = (float)itemFallTime;
         script.Time = time;
         script.mainTexture = image;
         script.clickTexture = clickImage;
         script.playSoundEffect = playSound;
+        return tmp;
+    }
+
+    public static GameObject GenerateNull(GameObject nullPrefabItem, Transform parent, Vector3 location, Material overrideMaterial, Texture2D image, Texture2D clickImage, float delay, Timeline time, int itemNum, bool playSound)
+    {
+        GameObject tmp = Instantiate(nullPrefabItem);
+        tmp.name = "Item" + itemNum.ToString().PadLeft(2, '0');
+        tmp.layer = 5;
+        tmp.transform.GetChild(0).gameObject.layer = 5;
+        tmp.transform.GetChild(1).gameObject.layer = 5;
+        DisableAllCollidersInObject(tmp);
+        tmp.GetComponentInChildren<BoxCollider>().enabled = true;
+        tmp.GetComponentInChildren<BoxCollider>().isTrigger = true;
+        if (image != null)
+        {
+            tmp.GetComponentInChildren<MeshRenderer>().material.mainTexture = image;
+            flipTexture(tmp);
+        }
+        tmp.transform.parent = parent;
+        tmp.transform.localPosition = location;
+        NullEvent script = tmp.GetComponentInChildren<NullEvent>();
+        script.transitionDelay = delay;
+        script.transitionDuration = (float)itemFallTime;
+        script.localTime = time;
+        script.time = time;
+        script.mainTexture = image;
+        script.clickTexture = clickImage;
+        script.playSoundEffect = playSound;
+        script.changeTexture = false;
+        tmp.GetComponentInChildren<MeshRenderer>().material = overrideMaterial;
         return tmp;
     }
 

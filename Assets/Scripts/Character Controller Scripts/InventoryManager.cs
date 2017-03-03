@@ -45,7 +45,7 @@ public class InventoryManager : MonoBehaviour
     private ClickableObject[] clickableObjects;
     private LinkedList<int> objectHeldList;
 
-    private int currentItemTypeIndex = 0;
+    public int currentItemTypeIndex = 0;
 
     private bool firstCall = true;
 
@@ -64,6 +64,11 @@ public class InventoryManager : MonoBehaviour
     }
 
     private static System.Random rng = new System.Random();
+
+    public ClickableObject[] Objects
+    {
+        get { return clickableObjects; }
+    }
 
     public static List<T> Shuffle<T>(IList<T> list)
     {
@@ -111,6 +116,10 @@ public class InventoryManager : MonoBehaviour
         get
         {
             return currentItemTypeIndex;
+        }
+        set
+        {
+            currentItemTypeIndex = value;
         }
     }
 
@@ -228,12 +237,16 @@ public class InventoryManager : MonoBehaviour
                             Vector3 mouse = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
                             placePosition = new Vector3(mouse.x, mousePlaceHeight, mouse.z);
                         }
+                        else
+                        {
+                            placePosition = new Vector3(placePosition.x, (float)ItemGenerator.itemHeight, placePosition.z);
+                        }
                         if (currentItemTypeIndex == 2)
                             obj = ItemGenerator.GenerateFall(fallPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum, prevPlaySound);
                         else if (currentItemTypeIndex == 1)
                             obj = ItemGenerator.GenerateFly(flyPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum, prevPlaySound);
                         else
-                            obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time, prevItemNum, prevPlaySound);
+                            obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum, prevPlaySound);
                         GameObject oldObj = clickableObjects[index].gameObject.transform.parent.gameObject;
                         clickableObjects[index] = obj.GetComponentInChildren<ClickableObject>();
                         DestroyImmediate(oldObj);

@@ -102,6 +102,8 @@ public class BoundaryManager : MonoBehaviour {
                 currentState--;
         if (currentState > profile.Length - 1)
             currentState = profile.Length - 1;
+        if (currentState < 0)
+            currentState = 0;
         for (int i = 0; i < renderers.Length; i++)
             renderers[i].material.color = profile[currentState];
     }

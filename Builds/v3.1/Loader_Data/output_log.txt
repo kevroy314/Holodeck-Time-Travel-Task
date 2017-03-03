@@ -1,0 +1,198 @@
+Initialize engine version: 5.3.2f1 (e87ab445ead0)
+[VRDevice] Initialization of device oculus failed.
+
+ 
+(Filename:  Line: 86)
+
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 1060 6GB (ID=0x1c03)
+    Vendor:   NVIDIA
+    VRAM:     3072 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.190 seconds
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 3200x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 5.385792 ms
+[VRDevice] Initialization of device oculus failed.
+
+ 
+(Filename:  Line: 86)
+
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 1f678 -> priority: 1 
+  Thread -> id: 1f67c -> priority: 1 
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 6.394006 ms
+
+Unloading 32 unused Assets to reduce memory usage. Loaded Objects now: 979.
+Total: 0.655942 ms (FindLiveObjects: 0.170551 ms CreateObjectMapping: 0.024752 ms MarkObjects: 0.256581 ms  DeleteObjects: 0.202850 ms)
+
+Could not load texture (C:/Users/Kevin/Documents/GitHub/Holodeck-Time-Travel-Task/Builds/v3.1/Loader_Data/ItemImages/bottle.jpg). File does not exist.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Could not load texture (C:/Users/Kevin/Documents/GitHub/Holodeck-Time-Travel-Task/Builds/v3.1/Loader_Data/ItemImages/clover.jpg). File does not exist.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Could not load texture (C:/Users/Kevin/Documents/GitHub/Holodeck-Time-Travel-Task/Builds/v3.1/Loader_Data/ItemImages/boot.jpg). File does not exist.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Could not load texture (C:/Users/Kevin/Documents/GitHub/Holodeck-Time-Travel-Task/Builds/v3.1/Loader_Data/ItemImages/bandana.jpg). File does not exist.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Could not load texture (C:/Users/Kevin/Documents/GitHub/Holodeck-Time-Travel-Task/Builds/v3.1/Loader_Data/ItemImages/guitar.jpg). File does not exist.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 5.629997 ms
+
+Unloading 91 unused Assets to reduce memory usage. Loaded Objects now: 1092.
+Total: 0.797213 ms (FindLiveObjects: 0.062485 ms CreateObjectMapping: 0.027167 ms MarkObjects: 0.447357 ms  DeleteObjects: 0.259298 ms)
+
+Initialize engine version: 5.3.2f1 (e87ab445ead0)
+[VRDevice] Initialization of device oculus failed.
+
+ 
+(Filename:  Line: 86)
+
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 1060 6GB (ID=0x1c03)
+    Vendor:   NVIDIA
+    VRAM:     3072 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.049 seconds
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Kevin\Documents\GitHub\Holodeck-Time-Travel-Task\Builds\v3.1\Loader_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 3200x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 0.480561 ms
+[VRDevice] Initialization of device oculus failed.
+
+ 
+(Filename:  Line: 86)
+
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 1f030 -> priority: 1 
+  Thread -> id: 1f36c -> priority: 1 
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 4.620274 ms
+
+Unloading 32 unused Assets to reduce memory usage. Loaded Objects now: 979.
+Total: 0.590740 ms (FindLiveObjects: 0.052825 ms CreateObjectMapping: 0.035921 ms MarkObjects: 0.244808 ms  DeleteObjects: 0.255977 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 5.987400 ms
+
+Unloading 101 unused Assets to reduce memory usage. Loaded Objects now: 1092.
+Total: 0.721748 ms (FindLiveObjects: 0.054636 ms CreateObjectMapping: 0.027771 ms MarkObjects: 0.389399 ms  DeleteObjects: 0.249336 ms)
+
+Unloading 7 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.669287 ms
+
+Unloading 30 unused Assets to reduce memory usage. Loaded Objects now: 1011.
+Total: 0.596777 ms (FindLiveObjects: 0.081200 ms CreateObjectMapping: 0.032902 ms MarkObjects: 0.272579 ms  DeleteObjects: 0.209792 ms)
+
+No Hit, Placing.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Valid Placement
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+No Hit, Placing.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Valid Placement
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+No Hit, Placing.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Valid Placement
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+2
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+No Hit, Placing.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Valid Placement
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+3
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+No Hit, Placing.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Valid Placement
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+4
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 4.842745 ms
+
+Unloading 120 unused Assets to reduce memory usage. Loaded Objects now: 1102.
+Total: 0.792383 ms (FindLiveObjects: 0.073352 ms CreateObjectMapping: 0.027167 ms MarkObjects: 0.398455 ms  DeleteObjects: 0.292200 ms)
+

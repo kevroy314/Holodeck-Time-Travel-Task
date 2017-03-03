@@ -5,17 +5,16 @@ using Chronos;
 public class FlyToSky : ClickableObject
 {
 
-    public float transitionDelay = 10f;
-    public float transitionDuration = 1f;
-
     public Vector3 startPos = new Vector3(0f, 0f, 0f);
     public Vector3 endPos = new Vector3(0f, 10f, 0f);
 
     private MeshRenderer render;
     public Timeline time;
     private AudioSource audioSrc;
-    private bool playedForward = false;
-    private bool playedBackward = true;
+    private bool playedForward;
+    private bool playedBackward;
+
+    public bool enableBumpStart = false;
 
     private Hashtable goToStartHash;
     private Hashtable goToEndHash;
@@ -29,8 +28,6 @@ public class FlyToSky : ClickableObject
         //time = GetComponent<Timeline>();
 
         audioSrc = transform.parent.gameObject.GetComponent<AudioSource>();
-
-        transform.localPosition = startPos;
 
         goToStartHash = new Hashtable();
         goToStartHash.Add("position", startPos);
@@ -47,7 +44,13 @@ public class FlyToSky : ClickableObject
         clickEndTime = transitionDelay + transitionDuration;
         localTime = time;
 
+        transform.localPosition = startPos;
         render.enabled = true;
+        playedBackward = true;
+        playedForward = false;
+
+        if (enableBumpStart)
+            BumpState(); //If item is created in the middle, we may need to sync it to the current timeline state
     }
 
     public void Update()
@@ -59,7 +62,7 @@ public class FlyToSky : ClickableObject
             iTween.MoveTo(gameObject, goToEndHash);
             audioSrc.timeSamples = 0;
             audioSrc.pitch = 1;
-            if (playSoundEffect)
+            if (playSoundEffect && Mathf.Abs(time.time - transitionDelay) < soundEffectTimeDistanceThreshold)
                 audioSrc.Play();
             playedForward = true;
             playedBackward = false;
@@ -78,10 +81,28 @@ public class FlyToSky : ClickableObject
             audioSrc.Stop();
             audioSrc.timeSamples = audioSrc.clip.samples - 1;
             audioSrc.pitch = -1;
-            if (playSoundEffect)
+            if (playSoundEffect && Mathf.Abs(time.time - transitionDelay) < soundEffectTimeDistanceThreshold)
                 audioSrc.Play();
             playedBackward = true;
             playedForward = false;
+        }
+    }
+
+    public void BumpState()
+    {
+        if (time.time >= transitionDelay)
+        {
+            gameObject.transform.localPosition = endPos;
+            playedForward = true;
+            playedBackward = false;
+            render.enabled = false;
+        }
+        if (time.time < transitionDelay)
+        {
+            gameObject.transform.localPosition = startPos;
+            playedBackward = true;
+            playedForward = false;
+            render.enabled = true;
         }
     }
 }
