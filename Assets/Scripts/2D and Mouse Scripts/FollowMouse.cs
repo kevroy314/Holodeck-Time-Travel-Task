@@ -13,7 +13,7 @@ public class FollowMouse : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        rect.anchoredPosition = Vector3.Scale(Camera.allCameras[0].ScreenToViewportPoint(Input.mousePosition), 
+        rect.anchoredPosition = Vector3.Scale(InputManager.mainManager.mouseViewportPoint, 
             new Vector3(Camera.allCameras[0].pixelWidth, Camera.allCameras[0].pixelHeight, 1f));
 	}
 }

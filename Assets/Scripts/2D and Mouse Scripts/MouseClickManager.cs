@@ -7,7 +7,6 @@ public class MouseClickManager : MonoBehaviour
     public ItemGenerator itemGen;
     private Transform itemsParent;
     private Vector3 down = new Vector3(0, -1, 0);
-    private bool prevMouseButtonState = false;
     public Text itemsRemainingText;
     public AudioClip completeSound;
     private bool complete = false;
@@ -40,11 +39,13 @@ public class MouseClickManager : MonoBehaviour
         }
         itemsRemainingText.text = remaining + " Items Remaining";
         RaycastHit hit;
-        bool mouseButtonState = Input.GetMouseButtonDown(0);
-        if (mouseButtonState && !prevMouseButtonState)
+        if (InputManager.mainManager.GetButton(InputManager.ButtonType.Place, InputManager.ButtonState.RisingEdge))
         {
-            if (Physics.Raycast(Camera.allCameras[0].ScreenPointToRay(Input.mousePosition), out hit))
+            Debug.Log("Click");
+
+            if (Physics.Raycast(InputManager.mainManager.mouseScreenRay, out hit))
             {
+                Debug.Log("Hit");
                 if (children.Contains(hit.collider.gameObject.transform.parent))
                 {
                     ClickableObject clickableObj = hit.collider.gameObject.GetComponentInChildren<ClickableObject>();
@@ -53,6 +54,5 @@ public class MouseClickManager : MonoBehaviour
                 }
             }
         }
-        prevMouseButtonState = mouseButtonState;
     }
 }

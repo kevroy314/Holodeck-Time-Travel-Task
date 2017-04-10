@@ -21,25 +21,11 @@ public class InventoryManager : MonoBehaviour
     public float placeDistance = 3f;
     public float minObjectPlaceDistance = 1f;
 
-    public KeyCode placeKeyCode = KeyCode.Space;
-    public string placeButtonString = "a";
-    public KeyCode nextKeyCode = KeyCode.Q;
-    public string nextButtonString = "y";
-    public KeyCode pickUpAllCode = KeyCode.P;
-    public string pickUpAllButtonString = "back";
-    public KeyCode nextItemTypeKeyCode = KeyCode.E;
-    public string nextItemTypeButtonString = "b";
-
     public Material upMaterial;
     public Material downMaterial;
     public Material infinityMaterial;
 
     public Image typeDisplayImage;
-
-    private bool previousInputState = false;
-    private bool previousNextInputState = false;
-    private bool previousPickUpAllInputState = false;
-    private bool previousNextItemTypeState = false;
 
     public ItemGenerator generator;
     private ClickableObject[] clickableObjects;
@@ -149,21 +135,17 @@ public class InventoryManager : MonoBehaviour
         Vector3 comparisonDistance = gameObject.transform.position;
         if (placeWithMouse)
         {
-            Vector3 mouse = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mouse = InputManager.mainManager.mouseWorldPosition;
             comparisonDistance = new Vector3(mouse.x, mousePlaceHeight*2, mouse.z);
         }
 
 
-        bool inputState = Input.GetKey(placeKeyCode) || Input.GetButton(placeButtonString);
-        bool mouseButtonState = Input.GetMouseButtonDown(0);
-        if (placeWithMouse)
-            inputState = mouseButtonState;
-        if (inputState && !previousInputState)
+        if (InputManager.mainManager.GetButton(InputManager.ButtonType.Place, InputManager.ButtonState.RisingEdge))
         {
             RaycastHit hit;
             var cameraCenter = targetingCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height / 2f, targetingCamera.nearClipPlane));
             if(placeWithMouse)
-                cameraCenter = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
+                cameraCenter = InputManager.mainManager.mouseScreenPosition;
             Physics.SphereCast(cameraCenter, 0.5f, targetingCamera.transform.forward, out hit, 1000f, 1 << LayerMask.NameToLayer("UI"));
             int hitIndex = -1;
             if (hit.transform != null)
@@ -234,7 +216,7 @@ public class InventoryManager : MonoBehaviour
                             Debug.Log("Placed within wall, placement has been shifted.");
                         if (placeWithMouse)
                         {
-                            Vector3 mouse = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
+                            Vector3 mouse = InputManager.mainManager.mouseWorldPosition;
                             placePosition = new Vector3(mouse.x, mousePlaceHeight, mouse.z);
                         }
                         else
@@ -261,14 +243,12 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
-        previousInputState = inputState;
 
-        bool nextInputState = Input.GetKey(nextKeyCode) || Input.GetButton(nextButtonString);
-        if (nextInputState && !previousNextInputState && objectHeldList.Count != 0) {
+        bool nextInputState = InputManager.mainManager.GetButton(InputManager.ButtonType.NextItem, InputManager.ButtonState.RisingEdge);
+        if (nextInputState && objectHeldList.Count != 0) {
             objectHeldList.AddLast(objectHeldList.First.Value);
             objectHeldList.RemoveFirst();
         }
-        previousNextInputState = nextInputState;
 
         if (objectHeldList.Count != 0)
             displayImage.material = clickableObjects[objectHeldList.First.Value].gameObject.GetComponent<MeshRenderer>().material;
@@ -288,8 +268,7 @@ public class InventoryManager : MonoBehaviour
             m.renderQueue = 3000;
         }
 
-        bool pickUpAllInputState = Input.GetKey(pickUpAllCode) || Input.GetButton(pickUpAllButtonString);
-        if (pickUpAllInputState && !previousPickUpAllInputState)
+        if (InputManager.mainManager.GetButton(InputManager.ButtonType.PickAll, InputManager.ButtonState.RisingEdge))
             for (int i = 0; i < clickableObjects.Length; i++)
             {
                 if (clickableObjects[i].gameObject.transform.parent.gameObject.activeSelf)
@@ -302,10 +281,8 @@ public class InventoryManager : MonoBehaviour
                     audioSrc.Play();
                 }
             }
-        previousPickUpAllInputState = pickUpAllInputState;
 
-        bool nextItemTypeState = Input.GetKey(nextItemTypeKeyCode) || Input.GetButton(nextItemTypeButtonString);
-        if(nextItemTypeState && !previousNextItemTypeState)
+        if (InputManager.mainManager.GetButton(InputManager.ButtonType.NextEvent, InputManager.ButtonState.RisingEdge))
         {
             currentItemTypeIndex = (currentItemTypeIndex + 1) % 3;
             switch (currentItemTypeIndex)
@@ -324,6 +301,5 @@ public class InventoryManager : MonoBehaviour
                     break;
             }
         }
-        previousNextItemTypeState = nextItemTypeState;
     }
 }

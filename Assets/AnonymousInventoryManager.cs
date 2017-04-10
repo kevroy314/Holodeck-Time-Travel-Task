@@ -35,16 +35,6 @@ public class AnonymousInventoryManager : MonoBehaviour {
     public AudioClip multiSoundEffect;
     private AudioSource audioSrc;
 
-    public KeyCode placeKeyCode = KeyCode.Space;
-    public string placeButtonString = "a";
-    public KeyCode nextKeyCode = KeyCode.Q;
-    public string nextButtonString = "y";
-    public KeyCode pickUpAllCode = KeyCode.P;
-    public string pickUpAllButtonString = "back";
-    public KeyCode nextItemTypeKeyCode = KeyCode.E;
-    public string nextItemTypeButtonString = "b";
-    public KeyCode nextStateKeyCode = KeyCode.A;
-
     public Material upMaterial;
     public Material downMaterial;
     public Material infinityMaterial;
@@ -102,22 +92,18 @@ public class AnonymousInventoryManager : MonoBehaviour {
 
     bool DetectPlacedButtonRisingEdge()
     {
-        bool inputState = Input.GetKeyDown(placeKeyCode) || Input.GetButtonDown(placeButtonString);
-        bool mouseButtonState = Input.GetMouseButtonDown(0);
-        if (placeWithMouse)
-            inputState = mouseButtonState;
-        return inputState;
+        return InputManager.mainManager.GetButton(InputManager.ButtonType.Place, InputManager.ButtonState.RisingEdge);
     }
 
     int DetectSelectionHit()
     {
         Vector3 comparisonDistance = gameObject.transform.position;
-        Vector3 mouse = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mouse = InputManager.mainManager.mouseWorldPosition;
         comparisonDistance = new Vector3(mouse.x, mousePlaceHeight * 2, mouse.z);
         RaycastHit hit;
         var cameraCenter = targetingCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height / 2f, targetingCamera.nearClipPlane));
         if (placeWithMouse)
-            cameraCenter = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
+            cameraCenter = InputManager.mainManager.mouseWorldPosition;
         Physics.SphereCast(cameraCenter, 0.5f, targetingCamera.transform.forward, out hit, 1000f, 1 << LayerMask.NameToLayer("UI"));
         int hitIndex = -1;
         if (hit.transform != null)
@@ -201,7 +187,7 @@ public class AnonymousInventoryManager : MonoBehaviour {
                 Vector3 placePosition = Vector3.zero;
                 if (placeWithMouse)
                 {
-                    Vector3 mouse = Camera.allCameras[0].ScreenToWorldPoint(Input.mousePosition);
+                    Vector3 mouse = InputManager.mainManager.mouseWorldPosition;
                     placePosition = new Vector3(mouse.x, mousePlaceHeight, mouse.z);
                 }
 
@@ -345,8 +331,7 @@ public class AnonymousInventoryManager : MonoBehaviour {
 
     bool DetectNextStateButtonRisingEdge()
     {
-        bool inputState = Input.GetKeyDown(nextStateKeyCode);
-        return inputState;
+        return InputManager.mainManager.GetButton(InputManager.ButtonType.NextState, InputManager.ButtonState.RisingEdge);
     }
 
     void SetImageMaterial(Image i, Material m)
@@ -373,7 +358,7 @@ public class AnonymousInventoryManager : MonoBehaviour {
 
     void UpdateEventType(bool allowChange=true)
     {
-        bool nextItemTypeState = Input.GetKeyDown(nextItemTypeKeyCode) || Input.GetButtonDown(nextItemTypeButtonString);
+        bool nextItemTypeState = InputManager.mainManager.GetButton(InputManager.ButtonType.NextEvent, InputManager.ButtonState.RisingEdge);
         if (nextItemTypeState && allowChange)
         {
             currentItemTypeIndex = (currentItemTypeIndex + 1) % 3;
@@ -397,7 +382,7 @@ public class AnonymousInventoryManager : MonoBehaviour {
 
     void UpdateInventoryState(bool allowChange=true)
     {
-        bool nextInputState = Input.GetKeyDown(nextKeyCode) || Input.GetButtonDown(nextButtonString);
+        bool nextInputState = InputManager.mainManager.GetButton(InputManager.ButtonType.NextItem, InputManager.ButtonState.RisingEdge);
         if (nextInputState && objectHeldList.Count != 0 && allowChange)
         {
             objectHeldList.AddLast(objectHeldList.First.Value);
@@ -450,6 +435,8 @@ public class AnonymousInventoryManager : MonoBehaviour {
         {
             if (objectHeldList.Count == 0)
                 SetImageMaterial(displayImage, emptyMaterial);
+            else
+                SetImageMaterial(displayImage, anonymousMaterial);
             if (DetectPlacedButtonRisingEdge())
                 if(!AttemptPerformPickup(DetectSelectionHit())) //No object is being picked up, drop the current item
                     AttemptPlaceItem();

@@ -74,7 +74,9 @@
   <ItemGroup>
     <Compile Include="Assets\AnonymousInventoryManager.cs" />
     <Compile Include="Assets\CameraFade.cs" />
+    <Compile Include="Assets\InputManager.cs" />
     <Compile Include="Assets\NullEvent.cs" />
+    <Compile Include="Assets\OrbitRecorder.cs" />
     <Compile Include="Assets\Scripts\2D and Mouse Scripts\Camera2DAdjuster.cs" />
     <Compile Include="Assets\Scripts\2D and Mouse Scripts\FollowMouse.cs" />
     <Compile Include="Assets\Scripts\2D and Mouse Scripts\ForceAspectRatio.cs" />

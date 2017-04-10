@@ -7,8 +7,9 @@ public class MouseOcculusion : MonoBehaviour {
     private MeshRenderer render;
     public KeyCode keyboardInvisibilityBubbleButton = KeyCode.None;
     public float distance = 10f;
-    private bool prevInputState = false;
-
+    public Material showTexture;
+    public Material hideTexture;
+    private bool showState = true;
 	// Use this for initialization
 	void Start () {
         render = GetComponent<MeshRenderer>();
@@ -17,17 +18,20 @@ public class MouseOcculusion : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         gameObject.transform.localScale = new Vector3(distance, distance, distance);
-        Vector3 mouse = Input.mousePosition;
-        Vector3 screenMouse = Camera.allCameras[0].ScreenToWorldPoint(mouse);
+        Vector3 screenMouse = InputManager.mainManager.mouseWorldPosition;
         transform.position = new Vector3(screenMouse.x, transform.position.y, screenMouse.z);
         if (changeColorWithBoundaries)
             render.material.color = boundaries.renderers[0].material.color;
-        if (keyboardInvisibilityBubbleButton != KeyCode.None)
-        {
-            bool inputState = Input.GetKey(keyboardInvisibilityBubbleButton);
-            if (inputState && !prevInputState)
-                render.enabled = !render.enabled;
-            prevInputState = inputState;
-        }
-	}
+        if (InputManager.mainManager.GetButton(InputManager.ButtonType.InvisibilityBubble, InputManager.ButtonState.RisingEdge))
+            if (showState)
+            {
+                render.material = hideTexture;
+                showState = false;
+            }
+            else
+            {
+                render.material = showTexture;
+                showState = true;
+            }
+    }
 }

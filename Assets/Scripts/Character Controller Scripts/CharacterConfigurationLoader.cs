@@ -134,15 +134,25 @@ public class CharacterConfigurationLoader : MonoBehaviour {
 
         if (inventory != null)
         {
-            inventory.placeKeyCode = keyboardClickButton;
-            inventory.placeButtonString = controllerClickButton;
-            inventory.nextKeyCode = keyboardNextItemButton;
-            inventory.nextButtonString = controllerNextItemButton;
+            //inventory.placeKeyCode = keyboardClickButton;
+            InputManager.mainManager.keys[InputManager.ButtonType.Place] = keyboardClickButton;
+            InputManager.mainManager.keys[InputManager.ButtonType.Pick] = keyboardClickButton;
+            //inventory.placeButtonString = controllerClickButton;
+            InputManager.mainManager.buttons[InputManager.ButtonType.Place] = controllerClickButton;
+            InputManager.mainManager.buttons[InputManager.ButtonType.Pick] = controllerClickButton;
+            //inventory.nextKeyCode = keyboardNextItemButton;
+            InputManager.mainManager.keys[InputManager.ButtonType.NextItem] = keyboardNextItemButton;
+            //inventory.nextButtonString = controllerNextItemButton;
+            InputManager.mainManager.buttons[InputManager.ButtonType.NextItem] = controllerNextItemButton;
             inventory.placeDistance = itemPlaceDistance;
-            inventory.pickUpAllCode = keyboardPickUpAllButton;
-            inventory.pickUpAllButtonString = controllerPickUpAllButton;
-            inventory.nextItemTypeKeyCode = keyboardNextItemTypeButton;
-            inventory.nextItemTypeButtonString = controllerNextItemTypeButton;
+            //inventory.pickUpAllCode = keyboardPickUpAllButton;
+            InputManager.mainManager.keys[InputManager.ButtonType.PickAll] = keyboardPickUpAllButton;
+            //inventory.pickUpAllButtonString = controllerPickUpAllButton;
+            InputManager.mainManager.buttons[InputManager.ButtonType.PickAll] = controllerPickUpAllButton;
+            //inventory.nextItemTypeKeyCode = keyboardNextItemTypeButton;
+            InputManager.mainManager.keys[InputManager.ButtonType.NextEvent] = keyboardNextItemTypeButton;
+            //inventory.nextItemTypeButtonString = controllerNextItemTypeButton;
+            InputManager.mainManager.buttons[InputManager.ButtonType.NextEvent] = controllerNextItemTypeButton;
         }
 
         if (tcontroller != null)
@@ -189,7 +199,7 @@ public class CharacterConfigurationLoader : MonoBehaviour {
 
         if (mouseOcculsion != null)
         {
-            mouseOcculsion.keyboardInvisibilityBubbleButton = toggleInvisibilityButton;
+            InputManager.mainManager.keys[InputManager.ButtonType.InvisibilityBubble] = toggleInvisibilityButton;
             mouseOcculsion.distance = invisibilityDistance;
         }
 

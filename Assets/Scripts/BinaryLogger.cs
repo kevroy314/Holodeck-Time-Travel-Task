@@ -96,14 +96,14 @@ public class BinaryLogger : MonoBehaviour {
         writer.Write(time.timeScale);
         if (followMousePosition)
         {
-            Vector3 mouse = cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mouse = cam.ScreenToWorldPoint(InputManager.mainManager.mouseScreenPosition);
             writer.Write(mouse.x);
             writer.Write(mouse.y);
             writer.Write(mouse.z);
-            writer.Write(Input.GetMouseButton(0) ? 1f : 0f);
-            writer.Write(Input.GetMouseButton(1) ? 1f : 0f);
-            writer.Write(Input.GetMouseButton(2) ? 1f : 0f);
-            writer.Write(0f);
+            writer.Write(InputManager.mainManager.isButtonDown(InputManager.ButtonType.Place) ? 1f : 0f);
+            writer.Write(InputManager.mainManager.isButtonDown(InputManager.ButtonType.NextEvent) ? 1f : 0f);
+            writer.Write(InputManager.mainManager.isButtonDown(InputManager.ButtonType.NextItem) ? 1f : 0f);
+            writer.Write(InputManager.mainManager.isButtonDown(InputManager.ButtonType.NextState) ? 1f : 0f);
         }
         else
         {
