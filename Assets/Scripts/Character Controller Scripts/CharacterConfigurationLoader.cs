@@ -26,6 +26,7 @@ public class CharacterConfigurationLoader : MonoBehaviour {
         TemporalImagingEffect vig = transform.parent.gameObject.GetComponentInChildren<TemporalImagingEffect>();
         CullLayerByDistance culler = transform.parent.gameObject.GetComponentInChildren<CullLayerByDistance>();
         AugmentedController augControl = GetComponent<AugmentedController>();
+        InputManager inputManager = FindObjectOfType<InputManager>();
 
         binaryLogger.keys = new System.Collections.Generic.List<KeyCode>();
         binaryLogger.buttons = new System.Collections.Generic.List<string>();
@@ -175,6 +176,11 @@ public class CharacterConfigurationLoader : MonoBehaviour {
         if (audio != null)
         {
             audio.enabled = stepSoundEnabled;
+        }
+
+        if (inputManager != null)
+        {
+            inputManager.sensitivity = mouseLookSensitivity;
         }
 
         if (controller != null)

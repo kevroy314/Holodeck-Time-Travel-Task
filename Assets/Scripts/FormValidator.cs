@@ -9,6 +9,7 @@ public class FormValidator : MonoBehaviour {
     public InputField subIDText;
     public Dropdown trialDropDown;
     public Button practiceButton;
+    public Button practiceTestButton;
     public Button studyButton;
     public Button testButton;
     public Toggle inversionToggle;
@@ -25,12 +26,14 @@ public class FormValidator : MonoBehaviour {
 	    if(subIDText.text.Length == 3 && trialDropDown.value != 0)
         {
             practiceButton.interactable = true;
+            practiceTestButton.interactable = true;
             studyButton.interactable = true;
             testButton.interactable = true;
         }
         else
         {
             practiceButton.interactable = false;
+            practiceTestButton.interactable = false;
             studyButton.interactable = false;
             testButton.interactable = false;
         }
@@ -71,6 +74,37 @@ public class FormValidator : MonoBehaviour {
                     c.aspect = 1f;
                 SetPlayerPrefValues(phase);
                 SceneManager.LoadScene(3);
+                break;
+        }
+    }
+
+    public void BeginPracticeTest()
+    {
+        int phase = -1;
+        switch (mode.value)
+        {
+            case 0:
+                phase = 9;
+                VRSettings.enabled = true;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practicetest.config");
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(2);
+                break;
+            case 1:
+                phase = 10;
+                VRSettings.enabled = false;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practicetestVE.config");
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(2);
+                break;
+            case 2:
+                phase = 11;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practicetest2d.config");
+                VRSettings.enabled = false;
+                foreach (Camera c in Camera.allCameras)
+                    c.aspect = 1f;
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(4);
                 break;
         }
     }
