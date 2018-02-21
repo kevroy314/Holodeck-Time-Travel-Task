@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour {
 
     public static InputManager mainManager;
 
+    public bool lockCursorToCenter;
 
     public Vector3 mouseScreenPosition;
     public Vector3 mouseWorldPosition;
@@ -84,30 +85,37 @@ public class InputManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        float deltaX = 0f;
-        float deltaY = 0f;
-
-        foreach (string alternativeXAxis in alternativeXAxisMappings)
-            deltaX += Input.GetAxis(alternativeXAxis);
-
-        foreach (string alternativeYAxis in alternativeYAxisMappings)
-            deltaY += Input.GetAxis(alternativeYAxis);
-
-        if (Mathf.Abs(deltaX) < minDelta) deltaX = 0;
-        if (Mathf.Abs(deltaY) < minDelta) deltaY = 0;
-
-        mouseScreenPosition = new Vector3(mouseScreenPosition.x + deltaX * sensitivity, mouseScreenPosition.y + deltaY * sensitivity, mouseZ);
-
-        if(restrictToWindow)
+        if (!lockCursorToCenter)
         {
-            if (mouseScreenPosition.x < Camera.allCameras[0].rect.xMin*Screen.width)
-                mouseScreenPosition.x = Camera.allCameras[0].rect.xMin * Screen.width;
-            if (mouseScreenPosition.y < Camera.allCameras[0].rect.yMin*Screen.height)
-                mouseScreenPosition.y = Camera.allCameras[0].rect.yMin * Screen.height;
-            if (mouseScreenPosition.x > Camera.allCameras[0].rect.xMax * Screen.width)
-                mouseScreenPosition.x = Camera.allCameras[0].rect.xMax * Screen.width;
-            if (mouseScreenPosition.y > Camera.allCameras[0].rect.yMax * Screen.height)
-                mouseScreenPosition.y = Camera.allCameras[0].rect.yMax * Screen.height;
+            float deltaX = 0f;
+            float deltaY = 0f;
+
+            foreach (string alternativeXAxis in alternativeXAxisMappings)
+                deltaX += Input.GetAxis(alternativeXAxis);
+
+            foreach (string alternativeYAxis in alternativeYAxisMappings)
+                deltaY += Input.GetAxis(alternativeYAxis);
+
+            if (Mathf.Abs(deltaX) < minDelta) deltaX = 0;
+            if (Mathf.Abs(deltaY) < minDelta) deltaY = 0;
+
+            mouseScreenPosition = new Vector3(mouseScreenPosition.x + deltaX * sensitivity, mouseScreenPosition.y + deltaY * sensitivity, mouseZ);
+
+            if (restrictToWindow)
+            {
+                if (mouseScreenPosition.x < Camera.allCameras[0].rect.xMin * Screen.width)
+                    mouseScreenPosition.x = Camera.allCameras[0].rect.xMin * Screen.width;
+                if (mouseScreenPosition.y < Camera.allCameras[0].rect.yMin * Screen.height)
+                    mouseScreenPosition.y = Camera.allCameras[0].rect.yMin * Screen.height;
+                if (mouseScreenPosition.x > Camera.allCameras[0].rect.xMax * Screen.width)
+                    mouseScreenPosition.x = Camera.allCameras[0].rect.xMax * Screen.width;
+                if (mouseScreenPosition.y > Camera.allCameras[0].rect.yMax * Screen.height)
+                    mouseScreenPosition.y = Camera.allCameras[0].rect.yMax * Screen.height;
+            }
+        }
+        else
+        {
+            mouseScreenPosition = new Vector3(Screen.width/2f, Screen.height/2f, 0f);
         }
 
         mouseWorldPosition = Camera.allCameras[0].ScreenToWorldPoint(mouseScreenPosition);

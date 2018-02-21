@@ -9,6 +9,10 @@ public class InventoryManager : MonoBehaviour
     public GameObject fallPrefabItem;
     public GameObject flyPrefabItem;
     public GameObject foilPrefabItem;
+    public GameObject flashPrefabItem;
+
+    public int lockEventIndex;
+    public bool lockEvent;
 
     public AudioClip soundEffect;
     public AudioClip multiSoundEffect;
@@ -227,8 +231,10 @@ public class InventoryManager : MonoBehaviour
                             obj = ItemGenerator.GenerateFall(fallPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum, prevPlaySound);
                         else if (currentItemTypeIndex == 1)
                             obj = ItemGenerator.GenerateFly(flyPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum, prevPlaySound);
-                        else
+                        else if (currentItemTypeIndex == 0)
                             obj = ItemGenerator.GenerateFoil(foilPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum, prevPlaySound);
+                        else
+                            obj = ItemGenerator.GenerateFlash(flashPrefabItem, prevParent, placePosition, prevTexture, prevClickTexture, time.time, time, prevItemNum, prevPlaySound);
                         GameObject oldObj = clickableObjects[index].gameObject.transform.parent.gameObject;
                         clickableObjects[index] = obj.GetComponentInChildren<ClickableObject>();
                         DestroyImmediate(oldObj);
@@ -281,25 +287,32 @@ public class InventoryManager : MonoBehaviour
                     audioSrc.Play();
                 }
             }
-
-        if (InputManager.mainManager.GetButton(InputManager.ButtonType.NextEvent, InputManager.ButtonState.RisingEdge))
+        if (!lockEvent)
         {
-            currentItemTypeIndex = (currentItemTypeIndex + 1) % 3;
-            switch (currentItemTypeIndex)
+            if (InputManager.mainManager.GetButton(InputManager.ButtonType.NextEvent, InputManager.ButtonState.RisingEdge))
             {
-                case 0:
-                    typeDisplayImage.material = infinityMaterial;
-                    break;
-                case 1:
-                    typeDisplayImage.material = upMaterial;
-                    break;
-                case 2:
-                    typeDisplayImage.material = downMaterial;
-                    break;
-                default:
-                    typeDisplayImage.material = null;
-                    break;
+                currentItemTypeIndex = (currentItemTypeIndex + 1) % 3;
+                switch (currentItemTypeIndex)
+                {
+                    case 0:
+                        typeDisplayImage.material = infinityMaterial;
+                        break;
+                    case 1:
+                        typeDisplayImage.material = upMaterial;
+                        break;
+                    case 2:
+                        typeDisplayImage.material = downMaterial;
+                        break;
+                    default:
+                        typeDisplayImage.material = null;
+                        break;
+                }
             }
+        }
+        else
+        {
+            currentItemTypeIndex = lockEventIndex;
+            typeDisplayImage.material = null;
         }
     }
 }

@@ -305,8 +305,10 @@
     <Compile Include="Assets\Scripts\2D and Mouse Scripts\FollowMouse.cs" />
     <Compile Include="Assets\Scripts\2D and Mouse Scripts\ForceAspectRatio.cs" />
     <Compile Include="Assets\Scripts\2D and Mouse Scripts\Item2DAdjuster.cs" />
+    <Compile Include="Assets\Scripts\2D and Mouse Scripts\LockCursor.cs" />
     <Compile Include="Assets\Scripts\2D and Mouse Scripts\MouseClickManager.cs" />
     <Compile Include="Assets\Scripts\2D and Mouse Scripts\MouseOcculusion.cs" />
+    <Compile Include="Assets\Scripts\2D and Mouse Scripts\UnlockCursor.cs" />
     <Compile Include="Assets\Scripts\Camera and Form Input\CameraFade.cs" />
     <Compile Include="Assets\Scripts\Camera and Form Input\CharacterConfigurationLoader.cs" />
     <Compile Include="Assets\Scripts\Camera and Form Input\DisableVR.cs" />
@@ -331,6 +333,7 @@
     <Compile Include="Assets\Scripts\Environment and Audio Scripts\MusicConfigurationLoader.cs" />
     <Compile Include="Assets\Scripts\Item Scripts\ClickableObject.cs" />
     <Compile Include="Assets\Scripts\Item Scripts\FallFromSky.cs" />
+    <Compile Include="Assets\Scripts\Item Scripts\Flash.cs" />
     <Compile Include="Assets\Scripts\Item Scripts\FlyToSky.cs" />
     <Compile Include="Assets\Scripts\Item Scripts\Foil.cs" />
     <Compile Include="Assets\Scripts\Item Scripts\ItemGenerator.cs" />

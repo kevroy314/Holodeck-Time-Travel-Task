@@ -10,6 +10,7 @@ public class ItemGenerator : MonoBehaviour
     public GameObject fallPrefabItem;
     public GameObject flyPrefabItem;
     public GameObject foilPrefabItem;
+    public GameObject flashPrefabItem;
     public static double itemHeight = 1.0;
     public static double itemFallTime = 1.0;
     public static double itemInactiveHeight = 10.0;
@@ -20,7 +21,7 @@ public class ItemGenerator : MonoBehaviour
 
     enum ItemTypes
     {
-        Fall = 0, Fly = 1, Foil = 2
+        Fall = 0, Fly = 1, Foil = 2, Flash = 3
     }
 
     // Use this for initialization
@@ -73,6 +74,9 @@ public class ItemGenerator : MonoBehaviour
                 case "fall":
                     types[i] = ItemTypes.Fall;
                     break;
+                case "flash":
+                    types[i] = ItemTypes.Flash;
+                    break;
                 default:
                     types[i] = ItemTypes.Foil;
                     break;
@@ -117,6 +121,8 @@ public class ItemGenerator : MonoBehaviour
                 GenerateFly(flyPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i, playSoundEffect[i]);
             else if (types[i] == ItemTypes.Foil)
                 GenerateFoil(foilPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i, playSoundEffect[i]);
+            else if (types[i] == ItemTypes.Flash)
+                GenerateFlash(flashPrefabItem, transform, locations[i], images[i], clickImages[i], delays[i], time, i, playSoundEffect[i]);
         }
     }
 
@@ -230,6 +236,34 @@ public class ItemGenerator : MonoBehaviour
         script.playSoundEffect = playSound;
         script.changeTexture = false;
         tmp.GetComponentInChildren<MeshRenderer>().material = overrideMaterial;
+        return tmp;
+    }
+
+    public static GameObject GenerateFlash(GameObject flashPrefabItem, Transform parent, Vector3 location, Texture2D image, Texture2D clickImage, float delay, Timeline time, int itemNum, bool playSound)
+    {
+        GameObject tmp = Instantiate(flashPrefabItem);
+        tmp.name = "Item" + itemNum.ToString().PadLeft(2, '0');
+        tmp.layer = 5;
+        tmp.transform.GetChild(0).gameObject.layer = 5;
+        tmp.transform.GetChild(1).gameObject.layer = 5;
+        DisableAllCollidersInObject(tmp);
+        tmp.transform.parent = parent;
+        tmp.transform.localPosition = location;
+        tmp.GetComponentInChildren<BoxCollider>().enabled = true;
+        tmp.GetComponentInChildren<BoxCollider>().isTrigger = true;
+        if (image != null)
+        {
+            tmp.GetComponentInChildren<MeshRenderer>().material.mainTexture = image;
+            flipTexture(tmp);
+        }
+        Flash script = tmp.GetComponentInChildren<Flash>();
+        script.transitionDelay = delay;
+        script.transitionDuration = (float)itemFallTime;
+        script.startPos = new Vector3(script.startPos.x, (float)itemInactiveHeight, script.startPos.z);
+        script.time = time;
+        script.mainTexture = image;
+        script.clickTexture = clickImage;
+        script.playSoundEffect = playSound;
         return tmp;
     }
 

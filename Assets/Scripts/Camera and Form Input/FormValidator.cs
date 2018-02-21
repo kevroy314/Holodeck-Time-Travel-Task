@@ -75,6 +75,15 @@ public class FormValidator : MonoBehaviour {
                 SetPlayerPrefValues(phase);
                 SceneManager.LoadScene(3);
                 break;
+            case 3:
+                phase = 12; //Skipping some numbers to keep consistent with previous version
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practicetimeonly.config");
+                UnityEngine.XR.XRSettings.enabled = false;
+                foreach (Camera c in Camera.allCameras)
+                    c.aspect = 1f;
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(6);
+                break;
         }
     }
 
@@ -105,6 +114,15 @@ public class FormValidator : MonoBehaviour {
                     c.aspect = 1f;
                 SetPlayerPrefValues(phase);
                 SceneManager.LoadScene(4);
+                break;
+            case 3:
+                phase = 13;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "practicetesttimeonly.config");
+                UnityEngine.XR.XRSettings.enabled = false;
+                foreach (Camera c in Camera.allCameras)
+                    c.aspect = 1f;
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(7);
                 break;
         }
     }
@@ -137,6 +155,15 @@ public class FormValidator : MonoBehaviour {
                 SetPlayerPrefValues(phase);
                 SceneManager.LoadScene(3);
                 break;
+            case 3:
+                phase = 14;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "studytimeonly.config");
+                UnityEngine.XR.XRSettings.enabled = false;
+                foreach (Camera c in Camera.allCameras)
+                    c.aspect = 1f;
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(6);
+                break;
         }
     }
 
@@ -167,6 +194,15 @@ public class FormValidator : MonoBehaviour {
                     c.aspect = 1f;
                 SetPlayerPrefValues(phase);
                 SceneManager.LoadScene(4);
+                break;
+            case 3:
+                phase = 15;
+                PlayerPrefs.SetString(CharacterConfigurationLoader.configFilePlayerPrefsString, "testtimeonly.config");
+                UnityEngine.XR.XRSettings.enabled = false;
+                foreach (Camera c in Camera.allCameras)
+                    c.aspect = 1f;
+                SetPlayerPrefValues(phase);
+                SceneManager.LoadScene(7);
                 break;
         }
     }
