@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Hidden/Tonemapper" {
 	Properties {
 		_MainTex ("", 2D) = "black" {}
@@ -28,21 +30,21 @@ Shader "Hidden/Tonemapper" {
 	v2f vert( appdata_img v ) 
 	{
 		v2f o;
-		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+		o.pos = UnityObjectToClipPos(v.vertex);
 		o.uv = v.texcoord.xy;
 		return o;
 	} 
 
 	float4 fragLog(v2f i) : SV_Target 
 	{
-		const float EPSILON = 1e-4h;
+		const float DELTA = 0.0001f;
  
 		float fLogLumSum = 0.0f;
  
-		fLogLumSum += log( max( EPSILON, Luminance(tex2D(_MainTex, i.uv + _MainTex_TexelSize.xy * float2(-1,-1)).rgb)));		
-		fLogLumSum += log( max( EPSILON, Luminance(tex2D(_MainTex, i.uv + _MainTex_TexelSize.xy * float2(1,1)).rgb)));		
-		fLogLumSum += log( max( EPSILON, Luminance(tex2D(_MainTex, i.uv + _MainTex_TexelSize.xy * float2(-1,1)).rgb)));		
-		fLogLumSum += log( max( EPSILON, Luminance(tex2D(_MainTex, i.uv + _MainTex_TexelSize.xy * float2(1,-1)).rgb)));		
+		fLogLumSum += log( Luminance(tex2D(_MainTex, i.uv + _MainTex_TexelSize.xy * float2(-1,-1)).rgb) + DELTA);		
+		fLogLumSum += log( Luminance(tex2D(_MainTex, i.uv + _MainTex_TexelSize.xy * float2(1,1)).rgb) + DELTA);		
+		fLogLumSum += log( Luminance(tex2D(_MainTex, i.uv + _MainTex_TexelSize.xy * float2(-1,1)).rgb) + DELTA);		
+		fLogLumSum += log( Luminance(tex2D(_MainTex, i.uv + _MainTex_TexelSize.xy * float2(1,-1)).rgb) + DELTA);		
 
 		float avg = fLogLumSum / 4.0;
 		return float4(avg, avg, avg, avg);

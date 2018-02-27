@@ -1,8 +1,18 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Chronos
 {
-	public class NavMeshAgentTimeline : ComponentTimeline<NavMeshAgent>
+    /*public class NavMeshAgent : UnityEngine.Component
+    {
+        public Vector3 velocity;
+        public float speed;
+        public float angularSpeed;
+
+        public 
+    }*/
+
+    public class NavMeshAgentTimeline : ComponentTimeline<NavMeshAgent>
 	{
 		private float _speed;
 

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Holodeck-Time-Travel-Task.Plugins", "Holodeck-Time-Travel-Task.Plugins.csproj", "{7B58F50C-C7C2-EA91-7D81-30FA59AE6366}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Holodeck-Time-Travel-Task", "Holodeck-Time-Travel-Task.csproj", "{BAE8F4F0-90E5-5739-789C-3D7E53B18430}"

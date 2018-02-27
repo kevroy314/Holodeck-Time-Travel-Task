@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 Shader "Hidden/BlendModesOverlay" {
 	Properties {
 		_MainTex ("Screen Blended", 2D) = "" {}
@@ -22,7 +24,7 @@ Shader "Hidden/BlendModesOverlay" {
 		
 	v2f vert( appdata_img v ) { 
 		v2f o;
-		o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+		o.pos = UnityObjectToClipPos(v.vertex);
 		
 		o.uv[0] = float2(
 			dot(v.texcoord.xy, _UV_Transform.xy),
@@ -66,7 +68,7 @@ if (Target > ½) R = 1 - (1-2x(Target-½)) x (1-Blend)
 if (Target <= ½) R = (2xTarget) x Blend		
 		*/
 		
-		float3 check = step(half3(0.5,0.5,0.5), color.rgb);
+		float3 check = step(0.5, color.rgb);
 		float3 result = 0;
 		
 			result =  check * (half3(1,1,1) - ( (half3(1,1,1) - 2*(color.rgb-0.5)) *  (1-m.rgb))); 
