@@ -289,6 +289,9 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/Kevin/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
+    <Reference Include="Cloudstoy">
+      <HintPath>Assets/Plugins/CloudsToy/DLL/Cloudstoy.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Plugins\Advanced INI Parser\INIParser.cs" />
@@ -381,11 +384,22 @@
     <Compile Include="Assets\Plugins\Chronos\Source\TimeState.cs" />
     <Compile Include="Assets\Plugins\Chronos\Source\Utilities\Severity.cs" />
     <Compile Include="Assets\Plugins\Chronos\Source\Utilities\Singleton.cs" />
+    <Compile Include="Assets\Plugins\CloudsToy\FPS Basics\FPS Scripts\FPSFlyerMouse.cs" />
+    <Compile Include="Assets\Plugins\CloudsToy\FPS Basics\FPS Scripts\FPSFlyerMousePhysics.cs" />
+    <Compile Include="Assets\Plugins\CloudsToy\Scripts\Example\CreateCloudsToy.cs" />
+    <Compile Include="Assets\Plugins\CloudsToy\Scripts\Utils\TimedObjectDestructorv2.cs" />
     <Compile Include="Assets\Plugins\Fantasy Skybox FREE\Scripts\FSPlayer.cs" />
     <Compile Include="Assets\Plugins\Pixelplacement\iTween\iTween.cs" />
     <Compile Include="Assets\Plugins\Pixelplacement\iTween\Sample\MoveSample.cs" />
     <Compile Include="Assets\Plugins\Pixelplacement\iTween\Sample\RotateSample.cs" />
     <Compile Include="Assets\Plugins\Pixelplacement\iTween\Sample\SampleInfo.cs" />
+    <Compile Include="Assets\Plugins\RainMaker\Demo\DemoScript.cs" />
+    <Compile Include="Assets\Plugins\RainMaker\Demo\DemoScript2D.cs" />
+    <Compile Include="Assets\Plugins\RainMaker\Demo\DemoScriptStartRainOnSpaceBar.cs" />
+    <Compile Include="Assets\Plugins\RainMaker\Prefab\BaseRainScript.cs" />
+    <Compile Include="Assets\Plugins\RainMaker\Prefab\RainCollision.cs" />
+    <Compile Include="Assets\Plugins\RainMaker\Prefab\RainScript.cs" />
+    <Compile Include="Assets\Plugins\RainMaker\Prefab\RainScript2D.cs" />
     <Compile Include="Assets\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" />
     <Compile Include="Assets\Standard Assets\Characters\FirstPersonCharacter\Scripts\FirstPersonController.cs" />
     <Compile Include="Assets\Standard Assets\Characters\FirstPersonCharacter\Scripts\HeadBob.cs" />
@@ -479,10 +493,17 @@
     <Compile Include="Assets\Standard Assets\Utility\WaypointProgressTracker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\NatureStarterKit2\info.txt" />
     <None Include="Assets\Plugins\Chronos\Readme.txt" />
+    <None Include="Assets\Plugins\CloudsToy\ChangeLog.txt" />
+    <None Include="Assets\Plugins\CloudsToy\Shaders\CloudBright.shader" />
+    <None Include="Assets\Plugins\CloudsToy\Shaders\CloudBrightLit.shader" />
+    <None Include="Assets\Plugins\CloudsToy\Shaders\CloudRealistic.shader" />
+    <None Include="Assets\Plugins\CloudsToy\Shaders\CloudRealisticLit.shader" />
     <None Include="Assets\Plugins\Fantasy Skybox FREE\Readme\Readme.txt" />
+    <None Include="Assets\Plugins\NatureStarterKit2\info.txt" />
     <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
+    <None Include="Assets\Plugins\RainMaker\Prefab\RainShader.shader" />
+    <None Include="Assets\Plugins\RainMaker\Readme.txt" />
     <None Include="Assets\Scripts\Logging\logspec.txt" />
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />

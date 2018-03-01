@@ -3,7 +3,6 @@ using System.Collections;
 
 public class AutoIntensity : MonoBehaviour
 {
-
     public Gradient nightDayColor;
 
     public float maxIntensity = 3f;
@@ -25,8 +24,9 @@ public class AutoIntensity : MonoBehaviour
     public Vector3 dayRotateSpeed;
     public Vector3 nightRotateSpeed;
 
-    float skySpeed = 1;
+    public float currentAtmosphericIntenity;
 
+    float skySpeed = 1;
 
     Light mainLight;
     Skybox sky;
@@ -47,6 +47,7 @@ public class AutoIntensity : MonoBehaviour
         float dot = Mathf.Clamp01((Vector3.Dot(mainLight.transform.forward, Vector3.down) - minPoint) / tRange);
         float i = ((maxIntensity - minIntensity) * dot) + minIntensity;
 
+
         mainLight.intensity = i;
 
         tRange = 1 - minAmbientPoint;
@@ -62,15 +63,11 @@ public class AutoIntensity : MonoBehaviour
 
         i = ((dayAtmosphereThickness - nightAtmosphereThickness) * dot) + nightAtmosphereThickness;
         skyMat.SetFloat("_AtmosphereThickness", i);
+        currentAtmosphericIntenity = i;
 
         if (dot > 0)
             transform.Rotate(dayRotateSpeed * Time.deltaTime * skySpeed);
         else
             transform.Rotate(nightRotateSpeed * Time.deltaTime * skySpeed);
-
-        if (Input.GetKeyDown(KeyCode.Q)) skySpeed *= 0.5f;
-        if (Input.GetKeyDown(KeyCode.E)) skySpeed *= 2f;
-
-
     }
 }
